@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  <!-- Define Persistence Unit -->
+  <persistence-unit name="my_persistence_unit">
+    <class>com.nhom15.pojo.ThanhVien</class>
+    <class>com.nhom15.pojo.GiangVien</class>
+    <class>com.nhom15.pojo.User</class>
+    <class>com.nhom15.pojo.TieuChi</class>
+    <class>com.nhom15.pojo.SinhVien</class>
+    <class>com.nhom15.pojo.Diem</class>
+    <class>com.nhom15.pojo.KhoaLuan</class>
+    <class>com.nhom15.pojo.HoiDong</class>
+  </persistence-unit>
+</persistence>
