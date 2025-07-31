@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Trang chủ</title>
+    <th:context th:replace="base :: resources"></th:context>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container">
+        <h1 class="text-info text-center mt-2">DANH SÁCH TÀI KHOẢN</h1>
+
+        <div class="mt-2 mb-2">
+            <a th:href="@{/user}" class="btn btn-success">Thêm tài khoản</a>
+        </div>
+
+        <div>
+            <form th:action="@{/}">
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" class="form-control" id="kw" placeholder="Nhập từ khóa" name="kw">
+                    <label for="kw">Nhập từ khóa</label>
+                </div>
+                <div class="mb-3 mt-3">
+                    <select name="role" class="form-select">
+                        <option value="">-- Tất cả vai trò --</option>
+                        <option value="admin" ${param.role == 'admin' ? 'selected' : ''}>Admin</option>
+                        <option value="giaovu" ${param.role == 'giaovu' ? 'selected' : ''}>Giáo vụ</option>
+                        <option value="giangvien" ${param.role == 'giangvien' ? 'selected' : ''}>Giảng viên</option>
+                        <option value="sinhvien" ${param.role == 'sinhvien' ? 'selected' : ''}>Sinh viên</option>
+                    </select>
+                </div>
+                <div class="mb-3 mt-3">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+            </form>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Họ và tên</th>
+                <th></th>
+            </tr>
+            <tr th:each="p : ${user}">
+                <td>
+                    <image th:src="${p.avatar}" width="200" class="rounded"/>
+                </td>
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.username}"></td>
+                <td th:text="${p.role}"></td>
+                <td th:text="${p.fullname}"></td>
+                <td>
+                    <a th:href="@{'/user/' + ${p.id}}" class="btn btn-info">Cập nhật</a>
+                    <button th:onclick="'deleteUser(\''+@{/api/user/}+'\','+${p.id}+')'" class="btn btn-danger">Xóa</button>
+                </td>
+            </tr>
+        </table>
+    </main>
+    <div th:replace="base :: footer"></div>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>
