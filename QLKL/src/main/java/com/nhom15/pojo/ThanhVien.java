@@ -15,7 +15,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -48,7 +47,7 @@ public class ThanhVien implements Serializable {
     @OneToMany(mappedBy = "thanhvienId")
     private Set<Diem> diemSet;
     @JoinColumn(name = "gv_id", referencedColumnName = "id")
-    @OneToOne
+    @ManyToOne
     private GiangVien gvId;
     @JoinColumn(name = "hoi_dong_id", referencedColumnName = "id")
     @ManyToOne

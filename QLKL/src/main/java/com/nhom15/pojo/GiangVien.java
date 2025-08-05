@@ -43,8 +43,8 @@ public class GiangVien implements Serializable {
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private User user;
-    @OneToOne(mappedBy = "gvId")
-    private ThanhVien thanhVien;
+    @OneToMany(mappedBy = "gvId")
+    private Set<ThanhVien> thanhVienSet;
     @OneToMany(mappedBy = "gvhd1")
     private Set<KhoaLuan> khoaLuanSet;
     @OneToMany(mappedBy = "gvhd2")
@@ -83,12 +83,12 @@ public class GiangVien implements Serializable {
         this.user = user;
     }
 
-    public ThanhVien getThanhVien() {
-        return thanhVien;
+    public Set<ThanhVien> getThanhVienSet() {
+        return thanhVienSet;
     }
 
-    public void setThanhVien(ThanhVien thanhVien) {
-        this.thanhVien = thanhVien;
+    public void setThanhVienSet(Set<ThanhVien> thanhVienSet) {
+        this.thanhVienSet = thanhVienSet;
     }
 
     public Set<KhoaLuan> getKhoaLuanSet() {

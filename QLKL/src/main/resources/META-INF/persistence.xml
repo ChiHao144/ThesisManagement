@@ -10,5 +10,6 @@
     <class>com.nhom15.pojo.Diem</class>
     <class>com.nhom15.pojo.KhoaLuan</class>
     <class>com.nhom15.pojo.HoiDong</class>
+    <class>com.nhom15.pojo.ThongBao</class>
   </persistence-unit>
 </persistence>

@@ -14,4 +14,11 @@ import java.util.Map;
  */
 public interface KhoaLuanService {
     List<KhoaLuan> getKhoaLuans(Map<String, String> params);
+    KhoaLuan getKhoaLuanById(int id);
+//    KhoaLuan getKhoaLuanChiTiet(int id);
+//    double tinhDiemKhoaLuan(KhoaLuan kl);
+    void addOrUpdateKhoaLuan(KhoaLuan kl);
+    void deleteKhoaLuan(int id);
+//    List<KhoaLuan> getKhoaLuansByGiangVienId(Map<String, String> params);
+//    List<KhoaLuan> getKhoaLuansChuaCoHoiDong(Map<String, String> params);
 }

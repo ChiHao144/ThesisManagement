@@ -13,11 +13,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  *
@@ -74,6 +76,8 @@ public class User implements Serializable {
     private Boolean isActive;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private GiangVien giangVien;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nguoiNhanId")
+    private Set<ThongBao> thongBaoSet;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private SinhVien sinhVien;
 
@@ -162,6 +166,14 @@ public class User implements Serializable {
 
     public void setGiangVien(GiangVien giangVien) {
         this.giangVien = giangVien;
+    }
+
+    public Set<ThongBao> getThongBaoSet() {
+        return thongBaoSet;
+    }
+
+    public void setThongBaoSet(Set<ThongBao> thongBaoSet) {
+        this.thongBaoSet = thongBaoSet;
     }
 
     public SinhVien getSinhVien() {

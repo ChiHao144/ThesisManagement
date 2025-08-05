@@ -4,10 +4,14 @@
  */
 package com.nhom15.repositories;
 
+import com.nhom15.pojo.GiangVien;
+import java.util.List;
+
 /**
  *
  * @author ACER
  */
 public interface GiangVienRepository {
-    
+    List<GiangVien> getGiangViens();
+    GiangVien getGiangVienById(int id);
 }

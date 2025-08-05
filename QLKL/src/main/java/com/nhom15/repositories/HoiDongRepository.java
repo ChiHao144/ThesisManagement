@@ -4,10 +4,18 @@
  */
 package com.nhom15.repositories;
 
+import com.nhom15.pojo.HoiDong;
+import com.nhom15.pojo.ThanhVien;
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author ACER
  */
 public interface HoiDongRepository {
-    
+    List<HoiDong> getHoiDongs(Map<String, String> params);
+    HoiDong getHoiDongById(int id);
+    void addOrUpdateHoiDong(HoiDong hd, List<ThanhVien> thanhVienList, List<Integer> khoaLuanIds);
+    void deleteHoiDong(int id);
 }

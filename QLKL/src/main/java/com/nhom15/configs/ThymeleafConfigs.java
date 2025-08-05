@@ -5,6 +5,7 @@
 package com.nhom15.configs;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -15,6 +16,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
  *
  * @author ACER
  */
+@Configuration
 public class ThymeleafConfigs {
     @Bean
     public ClassLoaderTemplateResolver templateResolver() {

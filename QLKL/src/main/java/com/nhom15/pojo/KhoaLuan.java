@@ -17,8 +17,11 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -30,7 +33,8 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "KhoaLuan.findAll", query = "SELECT k FROM KhoaLuan k"),
     @NamedQuery(name = "KhoaLuan.findById", query = "SELECT k FROM KhoaLuan k WHERE k.id = :id"),
-    @NamedQuery(name = "KhoaLuan.findByChuDe", query = "SELECT k FROM KhoaLuan k WHERE k.chuDe = :chuDe")})
+    @NamedQuery(name = "KhoaLuan.findByChuDe", query = "SELECT k FROM KhoaLuan k WHERE k.chuDe = :chuDe"),
+    @NamedQuery(name = "KhoaLuan.findByNgayTao", query = "SELECT k FROM KhoaLuan k WHERE k.ngayTao = :ngayTao")})
 public class KhoaLuan implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,18 +46,23 @@ public class KhoaLuan implements Serializable {
     @Size(max = 255)
     @Column(name = "chu_de")
     private String chuDe;
+    @Column(name = "ngay_tao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ngayTao;
     @OneToMany(mappedBy = "khoaLuanId")
     private Set<Diem> diemSet;
+    @OneToMany(mappedBy = "khoaLuanId")
+    private Set<ThongBao> thongBaoSet;
     @JoinColumn(name = "gvhd1", referencedColumnName = "id")
     @ManyToOne
     private GiangVien gvhd1;
-    @JoinColumn(name = "gvhd2", referencedColumnName = "id")
+    @JoinColumn(name = "gvhd2", referencedColumnName = "id", nullable = true)
     @ManyToOne
     private GiangVien gvhd2;
-    @JoinColumn(name = "gvpb", referencedColumnName = "id")
+    @JoinColumn(name = "gvpb", referencedColumnName = "id", nullable = true)
     @ManyToOne
     private GiangVien gvpb;
-    @JoinColumn(name = "hoidong_id", referencedColumnName = "id")
+    @JoinColumn(name = "hoidong_id", referencedColumnName = "id", nullable = true)
     @ManyToOne
     private HoiDong hoidongId;
     @JoinColumn(name = "sinh_vien_id", referencedColumnName = "id")
@@ -83,12 +92,28 @@ public class KhoaLuan implements Serializable {
         this.chuDe = chuDe;
     }
 
+    public Date getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(Date ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
     public Set<Diem> getDiemSet() {
         return diemSet;
     }
 
     public void setDiemSet(Set<Diem> diemSet) {
         this.diemSet = diemSet;
+    }
+
+    public Set<ThongBao> getThongBaoSet() {
+        return thongBaoSet;
+    }
+
+    public void setThongBaoSet(Set<ThongBao> thongBaoSet) {
+        this.thongBaoSet = thongBaoSet;
     }
 
     public GiangVien getGvhd1() {

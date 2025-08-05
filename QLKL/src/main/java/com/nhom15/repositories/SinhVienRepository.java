@@ -4,10 +4,15 @@
  */
 package com.nhom15.repositories;
 
+import com.nhom15.pojo.SinhVien;
+import java.util.List;
+
 /**
  *
  * @author ACER
  */
 public interface SinhVienRepository {
+    List<SinhVien> getSinhViens();
+    SinhVien getSinhVienById(int id);
     
 }
