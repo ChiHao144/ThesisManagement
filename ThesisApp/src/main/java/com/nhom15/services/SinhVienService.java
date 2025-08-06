@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public interface SinhVienService {
     List<SinhVien> getSinhViens(Map<String, String> params);
+    SinhVien getSinhVienById(int id);
     void addOrUpdateSinhVien(SinhVien sv);
     void importSinhVienFromUser();
 

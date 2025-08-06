@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.nhom15.pojo;
 
 import jakarta.persistence.Basic;
@@ -11,14 +15,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
 /**
  *
- * @author Chi Hao
+ * @author ACER
  */
 @Entity
 @Table(name = "thanh_vien")
@@ -35,12 +40,14 @@ public class ThanhVien implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 9)
     @Column(name = "vai_tro")
     private String vaiTro;
     @OneToMany(mappedBy = "thanhvienId")
     private Set<Diem> diemSet;
     @JoinColumn(name = "gv_id", referencedColumnName = "id")
-    @OneToOne
+    @ManyToOne
     private GiangVien gvId;
     @JoinColumn(name = "hoi_dong_id", referencedColumnName = "id")
     @ManyToOne

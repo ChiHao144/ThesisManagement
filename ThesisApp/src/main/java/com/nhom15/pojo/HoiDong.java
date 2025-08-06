@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.nhom15.pojo;
 
 import jakarta.persistence.Basic;
@@ -12,13 +16,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
- * @author Chi Hao
+ * @author ACER
  */
 @Entity
 @Table(name = "hoi_dong")
@@ -26,7 +32,8 @@ import java.util.Set;
     @NamedQuery(name = "HoiDong.findAll", query = "SELECT h FROM HoiDong h"),
     @NamedQuery(name = "HoiDong.findById", query = "SELECT h FROM HoiDong h WHERE h.id = :id"),
     @NamedQuery(name = "HoiDong.findByNgayBaoVe", query = "SELECT h FROM HoiDong h WHERE h.ngayBaoVe = :ngayBaoVe"),
-    @NamedQuery(name = "HoiDong.findByNoiDungBaoVe", query = "SELECT h FROM HoiDong h WHERE h.noiDungBaoVe = :noiDungBaoVe")})
+    @NamedQuery(name = "HoiDong.findByNoiDungBaoVe", query = "SELECT h FROM HoiDong h WHERE h.noiDungBaoVe = :noiDungBaoVe"),
+    @NamedQuery(name = "HoiDong.findByDaKhoa", query = "SELECT h FROM HoiDong h WHERE h.daKhoa = :daKhoa")})
 public class HoiDong implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,17 +42,22 @@ public class HoiDong implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "ngay_bao_ve")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ngayBaoVe;
+    @Size(max = 255)
     @Column(name = "noi_dung_bao_ve")
     private String noiDungBaoVe;
+    @Column(name = "da_khoa")
+    private Boolean daKhoa;
     @OneToMany(mappedBy = "hoiDongId")
     private Set<ThanhVien> thanhVienSet;
     @OneToMany(mappedBy = "hoidongId")
     private Set<KhoaLuan> khoaLuanSet;
 
     public HoiDong() {
+        this.daKhoa = false;
     }
 
     public HoiDong(Integer id) {
@@ -74,6 +86,14 @@ public class HoiDong implements Serializable {
 
     public void setNoiDungBaoVe(String noiDungBaoVe) {
         this.noiDungBaoVe = noiDungBaoVe;
+    }
+
+    public Boolean getDaKhoa() {
+        return daKhoa;
+    }
+
+    public void setDaKhoa(Boolean daKhoa) {
+        this.daKhoa = daKhoa;
     }
 
     public Set<ThanhVien> getThanhVienSet() {

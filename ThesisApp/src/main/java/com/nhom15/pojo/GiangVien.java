@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.nhom15.pojo;
 
 import jakarta.persistence.Basic;
@@ -10,12 +14,14 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
 /**
  *
- * @author Chi Hao
+ * @author ACER
  */
 @Entity
 @Table(name = "giang_vien")
@@ -28,15 +34,17 @@ public class GiangVien implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
     @Column(name = "id")
     private Integer id;
+    @Size(max = 100)
     @Column(name = "hoc_ham")
     private String hocHam;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private User user;
-    @OneToOne(mappedBy = "gvId")
-    private ThanhVien thanhVien;
+    @OneToMany(mappedBy = "gvId")
+    private Set<ThanhVien> thanhVienSet;
     @OneToMany(mappedBy = "gvhd1")
     private Set<KhoaLuan> khoaLuanSet;
     @OneToMany(mappedBy = "gvhd2")
@@ -75,12 +83,12 @@ public class GiangVien implements Serializable {
         this.user = user;
     }
 
-    public ThanhVien getThanhVien() {
-        return thanhVien;
+    public Set<ThanhVien> getThanhVienSet() {
+        return thanhVienSet;
     }
 
-    public void setThanhVien(ThanhVien thanhVien) {
-        this.thanhVien = thanhVien;
+    public void setThanhVienSet(Set<ThanhVien> thanhVienSet) {
+        this.thanhVienSet = thanhVienSet;
     }
 
     public Set<KhoaLuan> getKhoaLuanSet() {

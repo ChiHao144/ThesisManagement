@@ -31,4 +31,9 @@ public class GiangVienServiceImpl implements GiangVienService{
     public void importGiangVienFromUser() {
         giangVienRepo.importGiangVienFromUser();
     }
+    
+    @Override
+    public GiangVien getGiangVienById(int id) {
+        return this.giangVienRepo.getGiangVienById(id);
+    }
 }

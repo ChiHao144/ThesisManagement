@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.nhom15.pojo;
 
 import jakarta.persistence.Basic;
@@ -11,18 +15,22 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
- * @author Chi Hao
+ * @author ACER
  */
 @Entity
 @Table(name = "diem")
 @NamedQueries({
     @NamedQuery(name = "Diem.findAll", query = "SELECT d FROM Diem d"),
     @NamedQuery(name = "Diem.findById", query = "SELECT d FROM Diem d WHERE d.id = :id"),
-    @NamedQuery(name = "Diem.findByDiem", query = "SELECT d FROM Diem d WHERE d.diem = :diem")})
+    @NamedQuery(name = "Diem.findByDiem", query = "SELECT d FROM Diem d WHERE d.diem = :diem"),
+    @NamedQuery(name = "Diem.findByCreatedAt", query = "SELECT d FROM Diem d WHERE d.createdAt = :createdAt")})
 public class Diem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,6 +42,9 @@ public class Diem implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "diem")
     private Double diem;
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
     @JoinColumn(name = "khoa_luan_id", referencedColumnName = "id")
     @ManyToOne
     private KhoaLuan khoaLuanId;
@@ -65,6 +76,14 @@ public class Diem implements Serializable {
 
     public void setDiem(Double diem) {
         this.diem = diem;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public KhoaLuan getKhoaLuanId() {

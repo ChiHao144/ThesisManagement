@@ -53,7 +53,6 @@ public class GiangVienRepositoryImpl implements GiangVienRepository {
 
             q.where(predicates.toArray(Predicate[]::new));
 
-            //Sap xep du lieu
             q.orderBy(b.desc(root.get(params.getOrDefault("sortBy", "id"))));
         }
 
@@ -89,5 +88,11 @@ public class GiangVienRepositoryImpl implements GiangVienRepository {
                 session.persist(newGv);
             }
         }
+    }
+    
+    @Override
+    public GiangVien getGiangVienById(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(GiangVien.class, id);
     }
 }
