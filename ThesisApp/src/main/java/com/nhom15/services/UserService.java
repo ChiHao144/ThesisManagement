@@ -15,4 +15,7 @@ public interface UserService extends UserDetailsService{
     void deleteUser(int id);
     User getUserByUsername(String username);
     boolean authenticate(String username, String password);
+    
+    boolean changePassword(String username, String oldPassword, String newPassword);
+    boolean isFirstLogin(String username);
 }

@@ -43,17 +43,15 @@ public class SpringSecurityConfigs {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
-            Exception {
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(c -> c.disable()).authorizeHttpRequests(requests
-                -> requests.requestMatchers("/", "/home").authenticated()
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(c -> c.disable())
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/", "/home").authenticated()
                         .requestMatchers("/api/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/user").hasRole("admin")
                         .requestMatchers(HttpMethod.GET,
-                                "/products/**").hasAnyRole("USER", "ADMIN")
+                                "/user/**").hasAnyRole("giaovu", "admin")
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/login")
                 .loginProcessingUrl("/login").defaultSuccessUrl("/", true).failureUrl("/login?error=true").permitAll())
@@ -75,17 +73,17 @@ public class SpringSecurityConfigs {
     public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
         return new HandlerMappingIntrospector();
     }
-    
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:3000/")); 
+        config.setAllowedOrigins(List.of("http://localhost:3000/"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setExposedHeaders(List.of("Authorization"));
-        config.setAllowCredentials(true); 
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

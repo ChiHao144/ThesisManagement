@@ -89,4 +89,22 @@ public class UserServiceImpl implements UserService {
         return this.userRepo.authenticate(username, password);
     }
 
+    @Override
+    public boolean changePassword(String username, String oldPassword, String newPassword) {
+        User u = userRepo.getUserByUsername(username);
+        if (u != null && passwordEncoder.matches(oldPassword, u.getPassword())) {
+            u.setPassword(passwordEncoder.encode(newPassword));
+            u.setIsFirstLogin(Boolean.FALSE);
+            userRepo.addOrUpdateUser(u);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isFirstLogin(String username) {
+        User u = userRepo.getUserByUsername(username);
+        return u != null && u.isFirstLogin();
+    }
+
 }

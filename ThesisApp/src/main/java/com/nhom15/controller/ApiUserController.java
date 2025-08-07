@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,11 +55,28 @@ public class ApiUserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai thông tin đăng nhập");
     }
 
-    @RequestMapping("/secure/profile")
+    @GetMapping("/secure/profile")
     @ResponseBody
     @CrossOrigin
     public ResponseEntity<User> getProfile(Principal principal) {
         return new ResponseEntity<>(this.userService.getUserByUsername(principal.getName()), HttpStatus.OK);
     }
 
+    @PostMapping("/changepassword")
+    public ResponseEntity<?> changePassWord(@RequestParam String oldPassword, @RequestParam String newPassword, Principal principal){
+        String username = principal.getName();
+        boolean success = userService.changePassword(username, oldPassword, newPassword);
+        if(success) {
+            return ResponseEntity.ok(Collections.singletonMap("message", "Đổi mật khẩu thành công "));
+            
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", "Mật khẩu cũ không đúng!"));
+    }
+    
+    @GetMapping("/isfirstlogin")
+    public ResponseEntity<Map<String, Boolean>> isFirstLogin(Principal principal){
+        String username = principal.getName();
+        boolean res = userService.isFirstLogin(username);
+        return ResponseEntity.ok(Collections.singletonMap("isFirstLogin", res));
+    }
 }

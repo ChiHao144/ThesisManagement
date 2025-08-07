@@ -66,7 +66,7 @@ public class User implements Serializable {
 
     @Transient
     private MultipartFile file;
-    
+
     public User() {
     }
 
@@ -214,5 +214,9 @@ public class User implements Serializable {
     public void setIsFirstLogin(Boolean isFirstLogin) {
         this.isFirstLogin = isFirstLogin;
     }
-    
+
+    public boolean isFirstLogin() {
+        return Boolean.TRUE.equals(this.isFirstLogin);
+    }
+
 }

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { MyUserContext } from "../configs/Contexts";
 
 const Home = () => {
-    const [user] = useContext(MyUserContext);  // lấy thông tin user đã đăng nhập
+    const [user] = useContext(MyUserContext);  
     const nav = useNavigate();
 
     return (
