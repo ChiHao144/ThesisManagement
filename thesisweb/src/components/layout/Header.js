@@ -6,6 +6,7 @@ import { MyUserContext } from "../../configs/Contexts";
 const Header = () => {
     const [user, dispatch] = useContext(MyUserContext);
 
+
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary">
@@ -19,8 +20,8 @@ const Header = () => {
                                 <Link to="/login" className="nav-link text-info">ĐĂNG NHẬP</Link>
                             </> : <>
                                 <Link to="/" className="nav-link text-info">
-                                    <img src={user.avatar} width={30} className="rounded" />
-                                    Chào {user.username}!
+                                    <img src={user.avatar} width={30} height={30} className="rounded-circle" alt="avatar" />
+                                    <span className="text-info">Chào {user.username}!</span>
                                 </Link>
                                 <Button variant="danger" onClick={() => dispatch({"type": "logout"})}>ĐĂNG XUẤT</Button>
                             </>}
