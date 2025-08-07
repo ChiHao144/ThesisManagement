@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.nhom15.pojo;
 
 import jakarta.persistence.Basic;
@@ -10,12 +14,13 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
 /**
  *
- * @author Chi Hao
+ * @author ACER
  */
 @Entity
 @Table(name = "tieu_chi")
@@ -33,8 +38,10 @@ public class TieuChi implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 100)
     @Column(name = "ten_tc")
     private String tenTc;
+    @Size(max = 255)
     @Column(name = "noi_dung")
     private String noiDung;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

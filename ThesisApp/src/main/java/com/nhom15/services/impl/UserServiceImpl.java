@@ -48,7 +48,6 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        //Ma hoa mat khau neu la user moi hoac co cap nhat password
         if (u.getId() == null || u.getPassword().length() < 60) {
             u.setPassword(passwordEncoder.encode(u.getPassword()));
         }

@@ -53,7 +53,6 @@ public class SinhVienRepositoryImpl implements SinhVienRepository {
 
             q.where(predicates.toArray(Predicate[]::new));
 
-            //Sap xep du lieu
             q.orderBy(b.desc(root.get(params.getOrDefault("sortBy", "id"))));
         }
 
@@ -62,7 +61,6 @@ public class SinhVienRepositoryImpl implements SinhVienRepository {
         return query.getResultList();
     }
 
-    //Test thêm sinh viên
     @Override
     public void addOrUpdateSinhVien(SinhVien sv) {
         Session s = this.factory.getObject().getCurrentSession();

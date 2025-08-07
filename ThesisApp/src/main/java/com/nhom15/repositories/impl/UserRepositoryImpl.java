@@ -57,13 +57,11 @@ public class UserRepositoryImpl implements UserRepository {
 
             q.where(predicates.toArray(Predicate[]::new));
 
-            //Sap xep du lieu
             q.orderBy(b.desc(root.get(params.getOrDefault("sortBy", "id"))));
         }
 
         Query query = s.createQuery(q);
 
-        //Phan trang du lieu
         if (params != null) {
             String page = params.get("page");
             if (page != null) {

@@ -2,7 +2,12 @@ package com.nhom15.configs;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.nhom15.formatters.GiangVienFormatter;
+import com.nhom15.formatters.HoiDongFormatter;
+import com.nhom15.formatters.KhoaLuanFormatter;
+import com.nhom15.formatters.SinhVienFormatter;
 import com.nhom15.formatters.UserFormatter;
+import com.nhom15.pojo.KhoaLuan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +48,10 @@ public class WebAppContextConfigs implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new UserFormatter());
+        registry.addFormatter(new SinhVienFormatter());
+        registry.addFormatter(new GiangVienFormatter());
+        registry.addFormatter(new HoiDongFormatter());
+        registry.addFormatter(new KhoaLuanFormatter());
     }
 
     @Override

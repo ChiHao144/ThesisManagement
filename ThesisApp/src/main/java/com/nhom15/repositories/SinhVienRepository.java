@@ -11,7 +11,6 @@ import java.util.Map;
 public interface SinhVienRepository {
     List<SinhVien> getSinhViens(Map<String, String> params);
     void addOrUpdateSinhVien(SinhVien sv);
-    
     SinhVien getSinhVienById(int id);
     void importSinhVienFromUser();
 }

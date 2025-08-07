@@ -11,5 +11,6 @@ import java.util.Map;
 public interface GiangVienService {
     List<GiangVien> getGiangViens(Map<String, String> params);
     void addOrUpdateGiangVien(GiangVien gv);
+    GiangVien getGiangVienById(int id);
     void importGiangVienFromUser();
 }
