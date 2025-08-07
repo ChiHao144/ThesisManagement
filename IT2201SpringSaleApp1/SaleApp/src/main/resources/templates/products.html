@@ -1,0 +1,50 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Quản lý sản phẩm</title>
+    <th:context th:replace="base :: resources"></th:context>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container">
+        <h1 class="text-center text-info mt-2">QUẢN LÝ SẢN PHẨM</h1>
+
+        <form th:action="@{/products}" method="post" enctype="multipart/form-data" th:object="${product}">
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control" id="name" placeholder="Tên sản phẩm" th:field="*{name}" required />
+                <label for="name">Tên sản phẩm</label>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <input type="number" class="form-control" id="price" placeholder="Gía sản phẩm" th:field="*{price}" required maxlength="6" />
+                <label for="price">Gía sản phẩm</label>
+            </div>
+            <div class="form-floating">
+                <select class="form-select" id="cate" th:field="*{categoryId}">
+                    <option th:each="c: ${categories}" th:text="${c.name}" th:value="${c.id}">1</option>
+                </select>
+                <label for="sel1" class="form-label">Danh mục:</label>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <input type="file" class="form-control" id="price" th:field="*{file}" />
+            </div>
+            <div class="form-floating mb-3 mt-3" th:if="${product.image != null}">
+                <img th:src="${product.image}" width="300" />
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{image}" />
+                
+                <button type="submit" class="btn btn-success">
+                    <span th:if="${product.id == null}">Thêm sản phẩm</span>
+                    <span th:if="${product.id != null}">Cập nhật sản phẩm</span>
+                </button>
+            </div>
+        </form>
+    </main>
+    
+    <div th:replace="base :: footer"></div>
+
+</body>
+</html>
