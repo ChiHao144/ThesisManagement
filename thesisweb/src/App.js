@@ -9,6 +9,8 @@ import { MyUserContext } from "./configs/Contexts";
 import MyUserReducer from "./reducers/MyUserReducer";
 import { useReducer } from "react";
 import ChangePassword from "./components/ChangePassword";
+import KhoaLuanList from "./components/KhoaLuanList";
+import ChamDiem from "./components/ChamDiem";
 
 const App = () => {
   let [user, dispatch] = useReducer(MyUserReducer, null);
@@ -23,6 +25,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/hoidong/:hoiDongId/khoaluan" element={<KhoaLuanList />} />
+            <Route path="/khoaluan/:khoaLuanId/chamdiem" element={<ChamDiem />} />
           </Routes>
         </Container>
 

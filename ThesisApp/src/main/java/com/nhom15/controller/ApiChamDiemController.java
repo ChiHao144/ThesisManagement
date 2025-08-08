@@ -7,9 +7,11 @@ package com.nhom15.controller;
 import com.nhom15.pojo.Diem;
 import com.nhom15.pojo.HoiDong;
 import com.nhom15.pojo.KhoaLuan;
+import com.nhom15.pojo.ThanhVien;
 import com.nhom15.services.DiemService;
 import com.nhom15.services.HoiDongService;
 import com.nhom15.services.KhoaLuanService;
+import com.nhom15.services.ThanhVienService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class ApiChamDiemController {
 
     @Autowired
     private KhoaLuanService khoaLuanService;
+    
+    @Autowired
+    private ThanhVienService thanhVienService;
 
     @PostMapping("/secure/diem/cham")
     public ResponseEntity<String> chamDiem(
@@ -82,5 +87,27 @@ public class ApiChamDiemController {
             @PathVariable("hoiDongId") int hoiDongId) {
 
         return new ResponseEntity<>(khoaLuanService.getKhoaLuansByHoiDong(hoiDongId), HttpStatus.OK);
+    }
+
+    @GetMapping("/secure/thanhvien-id")
+    public ResponseEntity<?> getThanhVienIdByGiangVienAndKhoaLuan(
+            @RequestParam("giangVienId") int giangVienId,
+            @RequestParam("khoaLuanId") int khoaLuanId) {
+        try {
+            KhoaLuan kl = khoaLuanService.getKhoaLuanById(khoaLuanId);
+            if (kl == null || kl.getHoidongId() == null) {
+                return new ResponseEntity<>("Khóa luận hoặc hội đồng không tồn tại.", HttpStatus.NOT_FOUND);
+            }
+            ThanhVien tv = thanhVienService.getByGiangVienAndHoiDong(giangVienId, kl.getHoidongId().getId());
+            if (tv == null) {
+                return new ResponseEntity<>("Giảng viên không phải là thành viên của hội đồng cho khóa luận này.", HttpStatus.NOT_FOUND);
+            }
+            java.util.Map<String, Integer> response = new java.util.HashMap<>();
+            response.put("thanhVienId", tv.getId());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            
+            return new ResponseEntity<>("Lỗi máy chủ nội bộ khi lấy ID thành viên.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

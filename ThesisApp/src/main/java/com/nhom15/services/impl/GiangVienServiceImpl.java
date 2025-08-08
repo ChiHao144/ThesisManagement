@@ -44,6 +44,7 @@ public class GiangVienServiceImpl implements GiangVienService {
 
     }
 
+    @Override
     public GiangVien getByUsername(String username) {
         return this.giangVienRepo.getByUsername(username);
     }
