@@ -45,7 +45,7 @@ public class HoiDongController {
         return "hoidongs";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/hoidongs/create")
     public String createHoiDongForm(Model model) {
         model.addAttribute("hoiDong", new HoiDong());
         model.addAttribute("selectedGiangVienIds", List.of(0));
@@ -54,7 +54,7 @@ public class HoiDongController {
         return "hdcreateandupdate";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/hoidongs/save")
     public String addOrUpdateHoiDong(
             @ModelAttribute("hoiDong") HoiDong hd,
             @RequestParam(name = "giangVienIds", required = false) List<Integer> giangVienIds,
@@ -81,7 +81,7 @@ public class HoiDongController {
         }
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/hoidongs/edit/{id}")
     public String updateHoiDong(Model model, @PathVariable("id") int id, @RequestParam Map<String, String> params) {
         HoiDong hd = this.hoiDongService.getHoiDongById(id);
         model.addAttribute("hoiDong", hd);

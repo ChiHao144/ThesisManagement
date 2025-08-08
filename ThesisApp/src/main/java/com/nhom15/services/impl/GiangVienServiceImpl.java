@@ -36,4 +36,9 @@ public class GiangVienServiceImpl implements GiangVienService{
     public GiangVien getGiangVienById(int id) {
         return this.giangVienRepo.getGiangVienById(id);
     }
+
+    @Override
+    public GiangVien getByUsername(String username) {
+        return this.giangVienRepo.getByUsername(username);
+    }
 }

@@ -4,6 +4,7 @@
  */
 package com.nhom15.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,6 +46,7 @@ public class Diem implements Serializable {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+    @JsonIgnore
     @JoinColumn(name = "khoa_luan_id", referencedColumnName = "id")
     @ManyToOne
     private KhoaLuan khoaLuanId;

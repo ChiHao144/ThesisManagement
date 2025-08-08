@@ -4,7 +4,7 @@
  */
 package com.nhom15.services;
 
-import com.nhom15.pojo.KhoaLuan;
+import com.nhom15.pojo.Diem;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +12,7 @@ import java.util.Map;
  *
  * @author ACER
  */
-public interface KhoaLuanService {
-    List<KhoaLuan> getKhoaLuans(Map<String, String> params);
-    KhoaLuan getKhoaLuanById(int id);
-    void addOrUpdateKhoaLuan(KhoaLuan kl);
-    void deleteKhoaLuan(int id);
-    List<KhoaLuan> getKhoaLuansByHoiDong(int hoiDongId);
+public interface DiemService {
+     void chamDiem(int giangVienId, int khoaLuanId, Map<Integer, Double> diemTieuChi);
+     List<Diem> getDiemByGiangVienAndKhoaLuan(int thanhVienId, int khoaLuanId);
 }

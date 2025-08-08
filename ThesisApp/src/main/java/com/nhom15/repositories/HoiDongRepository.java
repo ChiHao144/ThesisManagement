@@ -18,4 +18,6 @@ public interface HoiDongRepository {
     HoiDong getHoiDongById(int id);
     void addOrUpdateHoiDong(HoiDong hd, List<Integer> giangVienIds, List<String> vaiTros, List<Integer> khoaLuanIds);
     void deleteHoiDong(int id);
+    boolean isHoiDongDaKhoa(int hoiDongId);
+    List<HoiDong> getHoiDongsByGiangVien(int giangVienId, Map<String, String> params);
 }

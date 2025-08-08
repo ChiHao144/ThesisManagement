@@ -4,6 +4,7 @@
  */
 package com.nhom15.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +43,7 @@ public class SinhVien implements Serializable {
     @OneToOne(optional = false)
     private User user;
     @OneToOne(mappedBy = "sinhVienId")
+    @JsonIgnore
     private KhoaLuan khoaLuan;
 
     public SinhVien() {

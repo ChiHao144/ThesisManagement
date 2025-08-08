@@ -18,4 +18,5 @@ public interface HoiDongService {
     HoiDong getHoiDongById(int id);
     void addOrUpdateHoiDong(HoiDong hd, List<Integer> giangVienIds, List<String> vaiTros, List<Integer> khoaLuanIds);
     void deleteHoiDong(int id);
+    List<HoiDong> getHoiDongsByGiangVien(int giangVienId, Map<String, String> params);
 }

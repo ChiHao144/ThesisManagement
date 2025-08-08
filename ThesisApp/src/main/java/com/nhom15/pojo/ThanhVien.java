@@ -4,6 +4,8 @@
  */
 package com.nhom15.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,12 +47,14 @@ public class ThanhVien implements Serializable {
     @Column(name = "vai_tro")
     private String vaiTro;
     @OneToMany(mappedBy = "thanhvienId")
+    @JsonIgnore
     private Set<Diem> diemSet;
     @JoinColumn(name = "gv_id", referencedColumnName = "id")
     @ManyToOne
     private GiangVien gvId;
     @JoinColumn(name = "hoi_dong_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private HoiDong hoiDongId;
 
     public ThanhVien() {
@@ -88,6 +92,7 @@ public class ThanhVien implements Serializable {
     public void setDiemSet(Set<Diem> diemSet) {
         this.diemSet = diemSet;
     }
+
 
     public GiangVien getGvId() {
         return gvId;

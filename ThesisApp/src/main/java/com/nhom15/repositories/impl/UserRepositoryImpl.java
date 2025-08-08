@@ -41,7 +41,6 @@ public class UserRepositoryImpl implements UserRepository {
         Root root = q.from(User.class);
         q.select(root);
 
-        //Loc du lieu
         if (params != null) {
             List<Predicate> predicates = new ArrayList<>();
 

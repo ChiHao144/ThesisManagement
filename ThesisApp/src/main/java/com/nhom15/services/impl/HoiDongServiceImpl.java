@@ -11,6 +11,7 @@ import com.nhom15.pojo.ThanhVien;
 import com.nhom15.repositories.GiangVienRepository;
 import com.nhom15.repositories.HoiDongRepository;
 import com.nhom15.repositories.KhoaLuanRepository;
+import com.nhom15.repositories.ThanhVienRepository;
 import com.nhom15.services.HoiDongService;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,6 +36,9 @@ public class HoiDongServiceImpl implements HoiDongService {
 
     @Autowired
     private GiangVienRepository giangVienRepo;
+
+    @Autowired
+    private ThanhVienRepository thanhVienRepo;
 
     @Override
     public HoiDong getHoiDongById(int id) {
@@ -131,5 +135,10 @@ public class HoiDongServiceImpl implements HoiDongService {
     @Override
     public void deleteHoiDong(int id) {
         this.hoiDongRepo.deleteHoiDong(id);
+    }
+
+    @Override
+    public List<HoiDong> getHoiDongsByGiangVien(int giangVienId, Map<String, String> params) {
+        return this.hoiDongRepo.getHoiDongsByGiangVien(giangVienId, params);
     }
 }

@@ -47,11 +47,9 @@ public class KhoaLuanRepositoryImpl implements KhoaLuanRepository {
         Root root = q.from(KhoaLuan.class);
         q.select(root);
 
-        //Lọc dữ liệu
         if (params != null) {
             List<Predicate> predicates = new ArrayList<>();
 
-            // JOIN các bảng liên quan
             Join<KhoaLuan, SinhVien> svJoin = root.join("sinhVienId", JoinType.LEFT);
             Join<SinhVien, User> svUserJoin = svJoin.join("user", JoinType.LEFT);
 
@@ -126,5 +124,13 @@ public class KhoaLuanRepositoryImpl implements KhoaLuanRepository {
         if (kl != null) {
             s.remove(kl);
         }
+    }
+
+    @Override
+    public List<KhoaLuan> getKhoaLuansByHoiDong(int hoiDongId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query query = s.createQuery("FROM KhoaLuan k WHERE k.hoidongId.id = :hoidongId", KhoaLuan.class);
+        query.setParameter("hoidongId", hoiDongId);
+        return query.getResultList();
     }
 }

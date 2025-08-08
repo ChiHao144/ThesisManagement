@@ -10,8 +10,10 @@ import com.nhom15.pojo.KhoaLuan;
 import com.nhom15.pojo.ThanhVien;
 import com.nhom15.repositories.HoiDongRepository;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -115,32 +117,26 @@ public class HoiDongRepositoryImpl implements HoiDongRepository {
         cqTv.select(rootTv).where(cbTv.equal(rootTv.get("hoiDongId").get("id"), hd.getId()));
         List<ThanhVien> oldThanhViens = session.createQuery(cqTv).getResultList();
 
-        // Tạo một Set chứa các ID giảng viên mới để dễ dàng kiểm tra sự tồn tại
         Set<Integer> newGiangVienIdsSet = new HashSet<>(giangVienIds != null ? giangVienIds : List.of());
 
-        // Xử lý các thành viên hiện có: cập nhật vai trò hoặc hủy liên kết nếu không còn trong danh sách mới
         for (ThanhVien tv : oldThanhViens) {
             if (newGiangVienIdsSet.contains(tv.getGvId().getId())) {
-                // Thành viên vẫn còn trong danh sách mới, cập nhật vai trò
                 int index = giangVienIds.indexOf(tv.getGvId().getId());
                 if (index != -1 && index < vaiTros.size()) {
                     tv.setVaiTro(vaiTros.get(index));
                     session.merge(tv);
                 }
-                newGiangVienIdsSet.remove(tv.getGvId().getId()); // Đánh dấu đã xử lý
+                newGiangVienIdsSet.remove(tv.getGvId().getId());
             } else {
-                // Thành viên không còn trong danh sách mới, hủy liên kết
                 tv.setHoiDongId(null);
                 session.merge(tv);
             }
         }
 
-        // Thêm các thành viên mới
         for (int i = 0; i < giangVienIds.size(); i++) {
             Integer gvId = giangVienIds.get(i);
             String vaiTro = vaiTros.get(i);
 
-            // Chỉ thêm nếu giảng viên ID này chưa được xử lý (tức là mới)
             if (newGiangVienIdsSet.contains(gvId)) {
                 GiangVien gv = session.get(GiangVien.class, gvId);
                 if (gv != null) {
@@ -153,19 +149,14 @@ public class HoiDongRepositoryImpl implements HoiDongRepository {
             }
         }
 
-
-        // 3. Quản lý KhoaLuan (Khóa luận liên quan)
-        // Lấy danh sách khóa luận hiện có của hội đồng này
         CriteriaBuilder cbKl = session.getCriteriaBuilder();
         CriteriaQuery<KhoaLuan> cqKl = cbKl.createQuery(KhoaLuan.class);
         Root<KhoaLuan> rootKl = cqKl.from(KhoaLuan.class);
         cqKl.select(rootKl).where(cbKl.equal(rootKl.get("hoidongId").get("id"), hd.getId()));
         List<KhoaLuan> oldKhoaLuans = session.createQuery(cqKl).getResultList();
 
-        // Tạo một Set chứa các ID khóa luận mới để dễ dàng kiểm tra sự tồn tại
         Set<Integer> newKhoaLuanIdsSet = new HashSet<>(khoaLuanIds != null ? khoaLuanIds : List.of());
 
-        // Hủy liên kết các khóa luận không còn trong danh sách mới
         for (KhoaLuan kl : oldKhoaLuans) {
             if (!newKhoaLuanIdsSet.contains(kl.getId())) {
                 kl.setHoidongId(null);
@@ -173,10 +164,8 @@ public class HoiDongRepositoryImpl implements HoiDongRepository {
             }
         }
 
-        // Liên kết các khóa luận mới (hoặc đã tồn tại nhưng chưa liên kết)
         if (khoaLuanIds != null) {
             for (Integer klId : khoaLuanIds) {
-                // Chỉ liên kết nếu khóa luận chưa được liên kết với hội đồng này
                 if (oldKhoaLuans.stream().noneMatch(kl -> kl.getId().equals(klId))) {
                     KhoaLuan kl = session.get(KhoaLuan.class, klId);
                     if (kl != null) {
@@ -198,4 +187,67 @@ public class HoiDongRepositoryImpl implements HoiDongRepository {
             s.remove(kl);
         }
     }
+
+    @Override
+    public boolean isHoiDongDaKhoa(int hoiDongId) {
+        Session session = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        CriteriaQuery<Boolean> cq = cb.createQuery(Boolean.class);
+        Root<HoiDong> root = cq.from(HoiDong.class);
+
+        cq.select(root.get("daKhoa"))
+                .where(cb.equal(root.get("id"), hoiDongId));
+
+        Boolean daKhoa = session.createQuery(cq).getSingleResult();
+        return Boolean.TRUE.equals(daKhoa);
+    }
+
+    @Override
+    public List<HoiDong> getHoiDongsByGiangVien(int giangVienId, Map<String, String> params) {
+        Session session = factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        CriteriaQuery<HoiDong> cq = cb.createQuery(HoiDong.class);
+        Root<ThanhVien> thanhVienRoot = cq.from(ThanhVien.class);
+
+        Join<ThanhVien, HoiDong> hoiDongJoin = thanhVienRoot.join("hoiDongId");
+        hoiDongJoin.fetch("thanhVienSet", JoinType.LEFT);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(cb.equal(thanhVienRoot.get("gvId").get("id"), giangVienId));
+
+        if (params != null) {
+            String kw = params.get("kw");
+            if (kw != null && !kw.isEmpty()) {
+                predicates.add(cb.like(hoiDongJoin.get("noiDungBaoVe"), String.format("%%%s%%", kw)));
+            }
+
+            String daKhoa = params.get("daKhoa");
+            if (daKhoa != null && !daKhoa.isEmpty()) {
+                boolean isLocked = Boolean.parseBoolean(daKhoa);
+                predicates.add(cb.equal(hoiDongJoin.get("daKhoa"), isLocked));
+            }
+
+            String sortBy = params.getOrDefault("sortBy", "id");
+            cq.orderBy(cb.desc(hoiDongJoin.get(sortBy)));
+        }
+
+        cq.select(hoiDongJoin).distinct(true).where(predicates.toArray(Predicate[]::new));
+
+        Query query = session.createQuery(cq);
+
+        if (params != null) {
+            String page = params.get("page");
+            if (page != null) {
+                int start = (Integer.parseInt(page) - 1) * PAGE_SIZE;
+                query.setFirstResult(start);
+                query.setMaxResults(PAGE_SIZE);
+            }
+        }
+
+        return query.getResultList();
+    }
+
 }

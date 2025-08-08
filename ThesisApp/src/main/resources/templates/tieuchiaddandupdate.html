@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Thiết lập tiêu chí</title>
+    <th:context th:replace="base :: resources"></th:context>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container">
+        <h1 class="text-center text-info mt-2">THIẾT LẬP TIÊU CHÍ</h1>
+
+        <form th:action="@{/tieuchis/save}" method="post" th:object="${tieuchi}">
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control" id="tenTC" placeholder="Tên tiêu chí" th:field="*{tenTc}" required />
+                <label for="tenTc">Tên tiêu chí</label>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control" id="noiDung" placeholder="Nội dung" th:field="*{noiDung}" required />
+                <label for="noiDung">Nội dung</label>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <input type="number" class="form-control" id="diemToiDa" placeholder="Điểm tối đa" th:field="*{diemToiDa}" required/>
+                <label for="diemToiDa">Điểm tối đa</label>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <input type="hidden" th:field="*{id}" />
+                
+                <button type="submit" class="btn btn-success">
+                    <span th:if="${tieuchi.id == null}">Thêm tiêu chí</span>
+                    <span th:if="${tieuchi.id != null}">Cập nhật tiêu chí</span>
+                </button>
+            </div>
+        </form>
+    </main>
+    
+    <div th:replace="base :: footer"></div>
+
+</body>
+</html>
