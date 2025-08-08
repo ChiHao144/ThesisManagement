@@ -13,4 +13,5 @@ public interface SinhVienRepository {
     void addOrUpdateSinhVien(SinhVien sv);
     SinhVien getSinhVienById(int id);
     void importSinhVienFromUser();
+    void updateSinhVien(SinhVien sv);
 }

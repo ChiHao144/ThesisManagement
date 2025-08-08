@@ -7,6 +7,7 @@ export const endpoints = {
     'user': '/user',
     'login': '/login',
     'profile': '/secure/profile',
+    "change-password": "/secure/changepassword",
 }
 
 export const authApis = () => axios.create({

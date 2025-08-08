@@ -95,4 +95,14 @@ public class GiangVienRepositoryImpl implements GiangVienRepository {
         Session s = this.factory.getObject().getCurrentSession();
         return s.get(GiangVien.class, id);
     }
+
+    @Override
+    public void updateGiangVien(GiangVien gv) {
+        Session s = this.factory.getObject().getCurrentSession();
+        if (gv.getId() == null) {
+            s.persist(gv);
+        } else {
+            s.merge(gv);
+        }
+    }
 }

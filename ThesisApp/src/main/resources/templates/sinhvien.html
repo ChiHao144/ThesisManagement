@@ -39,7 +39,7 @@
                 <td th:text="${sv.user.fullname}"></td>
                 <td th:text="${sv.khoa}"></td>
                 <td>
-                    <a href="#" class="btn btn-info">Cập nhật</a>
+                    <a th:href="@{'/sinhvien/' + ${sv.id}}" class="btn btn-info">Cập nhật</a>
                     <button class="btn btn-danger">Xóa</button>
                 </td>
             </tr>

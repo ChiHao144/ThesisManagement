@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,7 +34,6 @@ public class SinhVienController {
         return "redirect:/sinhvien";
     }
 
-    //Test thêm sinh viên
     @GetMapping("/addsinhvien")
     public String showAddSinhVienForm(Model model) {
         model.addAttribute("sinhvien", new SinhVien());
@@ -45,5 +45,10 @@ public class SinhVienController {
         this.sinhVienService.importSinhVienFromUser();
         return "redirect:/sinhvien";
     }
-
+    
+    @GetMapping("/sinhvien/{sinhVienId}")
+    public String updateUser(Model model, @PathVariable(value = "sinhVienId") int id) {
+         model.addAttribute("sinhvien", this.sinhVienService.getSinhVienById(id));
+         return "sinhvienupdate";
+    }
 }

@@ -98,4 +98,14 @@ public class SinhVienRepositoryImpl implements SinhVienRepository {
         }
     }
 
+    @Override
+    public void updateSinhVien(SinhVien sv) {
+        Session s = this.factory.getObject().getCurrentSession();
+        if (sv.getId() == null) {
+            s.persist(sv);
+        } else {
+            s.merge(sv);
+        }
+    }
+
 }

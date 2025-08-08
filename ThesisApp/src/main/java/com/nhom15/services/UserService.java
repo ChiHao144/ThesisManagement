@@ -17,5 +17,4 @@ public interface UserService extends UserDetailsService{
     boolean authenticate(String username, String password);
     
     boolean changePassword(String username, String oldPassword, String newPassword);
-    boolean isFirstLogin(String username);
 }

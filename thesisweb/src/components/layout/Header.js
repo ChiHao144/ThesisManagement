@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { MyUserContext } from "../../configs/Contexts";
 
 const Header = () => {
     const [user, dispatch] = useContext(MyUserContext);
-
+    const nav = useNavigate();
 
     return (
         <>
@@ -23,7 +23,8 @@ const Header = () => {
                                     <img src={user.avatar} width={30} height={30} className="rounded-circle" alt="avatar" />
                                     <span className="text-info">Chào {user.username}!</span>
                                 </Link>
-                                <Button variant="danger" onClick={() => dispatch({"type": "logout"})}>ĐĂNG XUẤT</Button>
+                                <Button variant="info" onClick={() => nav("/change-password")}>Đổi mật khẩu</Button>
+                                <Button variant="danger" onClick={() => dispatch({ "type": "logout" })}>ĐĂNG XUẤT</Button>
                             </>}
                         </Nav>
                     </Navbar.Collapse>

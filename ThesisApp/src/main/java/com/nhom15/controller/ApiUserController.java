@@ -62,21 +62,22 @@ public class ApiUserController {
         return new ResponseEntity<>(this.userService.getUserByUsername(principal.getName()), HttpStatus.OK);
     }
 
-    @PostMapping("/changepassword")
-    public ResponseEntity<?> changePassWord(@RequestParam String oldPassword, @RequestParam String newPassword, Principal principal){
+    @PostMapping("/secure/changepassword")
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> req, Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Bạn chưa đăng nhập!"));
+        }
+
+        String oldPassword = req.get("oldPassword");
+        String newPassword = req.get("newPassword");
         String username = principal.getName();
         boolean success = userService.changePassword(username, oldPassword, newPassword);
-        if(success) {
-            return ResponseEntity.ok(Collections.singletonMap("message", "Đổi mật khẩu thành công "));
-            
+
+        if (success) {
+            return ResponseEntity.ok(Collections.singletonMap("message", "Đổi mật khẩu thành công"));
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", "Mật khẩu cũ không đúng!"));
+
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "Mật khẩu cũ không đúng!"));
     }
-    
-    @GetMapping("/isfirstlogin")
-    public ResponseEntity<Map<String, Boolean>> isFirstLogin(Principal principal){
-        String username = principal.getName();
-        boolean res = userService.isFirstLogin(username);
-        return ResponseEntity.ok(Collections.singletonMap("isFirstLogin", res));
-    }
+
 }

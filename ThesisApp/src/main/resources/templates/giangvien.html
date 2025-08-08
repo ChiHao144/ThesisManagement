@@ -37,7 +37,7 @@
                 <td th:text="${gv.user.fullname}"></td>
                 <td th:text="${gv.hocHam}"></td>
                 <td>
-                    <a href="#" class="btn btn-info">Cập nhật</a>
+                    <a th:href="@{'/giangvien/' + ${gv.id}}" class="btn btn-info">Cập nhật</a>
                     <button class="btn btn-danger">Xóa</button>
                 </td>
             </tr>

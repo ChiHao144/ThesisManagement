@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import { MyUserContext } from "./configs/Contexts";
 import MyUserReducer from "./reducers/MyUserReducer";
 import { useReducer } from "react";
+import ChangePassword from "./components/ChangePassword";
 
 const App = () => {
   let [user, dispatch] = useReducer(MyUserReducer, null);
@@ -21,6 +22,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/change-password" element={<ChangePassword />} />
           </Routes>
         </Container>
 

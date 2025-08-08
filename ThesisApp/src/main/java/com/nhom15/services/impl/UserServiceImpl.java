@@ -94,17 +94,11 @@ public class UserServiceImpl implements UserService {
         User u = userRepo.getUserByUsername(username);
         if (u != null && passwordEncoder.matches(oldPassword, u.getPassword())) {
             u.setPassword(passwordEncoder.encode(newPassword));
-            u.setIsFirstLogin(Boolean.FALSE);
             userRepo.addOrUpdateUser(u);
             return true;
         }
         return false;
     }
 
-    @Override
-    public boolean isFirstLogin(String username) {
-        User u = userRepo.getUserByUsername(username);
-        return u != null && u.isFirstLogin();
-    }
 
 }

@@ -37,4 +37,9 @@ public class SinhVienServiceImpl implements SinhVienService {
     public SinhVien getSinhVienById(int id) {
         return this.sinhVienRepo.getSinhVienById(id);
     }
+
+    @Override
+    public void updateSinhVien(SinhVien sv) {
+        this.sinhVienRepo.updateSinhVien(sv);
+    }
 }

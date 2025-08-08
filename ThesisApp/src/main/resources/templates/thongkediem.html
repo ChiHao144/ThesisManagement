@@ -1,0 +1,131 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống kê điểm theo năm</title>
+    <th:block th:replace="base :: resources"></th:block>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Tùy chỉnh chiều cao của vùng chứa biểu đồ để cân đối hơn */
+        #chart-container {
+            position: relative;
+            height: 450px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container my-4">
+        <h1 class="text-primary text-center mt-2 mb-4">THỐNG KÊ ĐIỂM KHÓA LUẬN THEO NĂM</h1>
+
+        <!-- Biểu đồ được đặt trong card để có hiệu ứng đổ bóng và viền -->
+        <div class="card shadow-sm mb-5">
+            <div class="card-body" id="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Bảng dữ liệu chi tiết -->
+        <h2 class="text-center text-secondary h4">Bảng số liệu chi tiết</h2>
+        <table class="table table-bordered table-striped mt-3 text-center align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th style="width: 50%;">Năm</th>
+                    <th style="width: 50%;">Điểm trung bình</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Kiểm tra nếu có dữ liệu thì mới hiển thị -->
+                <tr th:if="${labels != null and !labels.isEmpty()}" th:each="label, stat : ${labels}">
+                    <td class="fw-bold" th:text="${label}"></td>
+                    <!-- Định dạng điểm thành 2 chữ số thập phân -->
+                    <td th:text="${#numbers.formatDecimal(scores[stat.index], 1, 2)}"></td>
+                </tr>
+                <!-- Thông báo nếu không có dữ liệu -->
+                <tr th:if="${labels == null or labels.isEmpty()}">
+                    <td colspan="2" class="text-center text-muted p-3">Không có dữ liệu để hiển thị.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Script để vẽ biểu đồ -->
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const labels = /*[[${labels}]]*/ [];
+            const scores = /*[[${scores}]]*/ [];
+            /*]]>*/
+
+            if (labels && labels.length > 0) {
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Điểm trung bình',
+                        data: scores,
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        hoverBackgroundColor: 'rgba(54, 162, 235, 0.9)',
+                        barPercentage: 0.6,
+                        categoryPercentage: 0.7
+                    }]
+                };
+
+                const config = {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false // Ẩn chú thích mặc định vì đã có tiêu đề
+                            },
+                            title: {
+                                display: true,
+                                text: 'Biểu đồ điểm trung bình qua các năm',
+                                font: {
+                                    size: 18,
+                                    weight: 'bold'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        // Tùy chỉnh nội dung tooltip
+                                        return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10,
+                                title: {
+                                    display: true,
+                                    text: 'Điểm trung bình (Thang 10)',
+                                    font: { size: 14, weight: 'bold' }
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Năm',
+                                    font: { size: 14, weight: 'bold' }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, config);
+            }
+        </script>
+    </main>
+
+    <div th:replace="base :: footer"></div>
+</body>
+</html>

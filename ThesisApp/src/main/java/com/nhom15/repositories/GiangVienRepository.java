@@ -13,4 +13,5 @@ public interface GiangVienRepository {
     void addOrUpdateGiangVien(GiangVien gv);
     GiangVien getGiangVienById(int id);
     public void importGiangVienFromUser();
+    void updateGiangVien(GiangVien gv);
 }

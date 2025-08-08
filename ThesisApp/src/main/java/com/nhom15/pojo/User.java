@@ -57,8 +57,6 @@ public class User implements Serializable {
     private String fullname;
     @Column(name = "is_active")
     private Boolean isActive;
-    @Column(name = "is_first_login")
-    private Boolean isFirstLogin = true;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private GiangVien giangVien;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
@@ -201,22 +199,5 @@ public class User implements Serializable {
         this.file = file;
     }
 
-    /**
-     * @return the isFirstLogin
-     */
-    public Boolean getIsFirstLogin() {
-        return isFirstLogin;
-    }
-
-    /**
-     * @param isFirstLogin the isFirstLogin to set
-     */
-    public void setIsFirstLogin(Boolean isFirstLogin) {
-        this.isFirstLogin = isFirstLogin;
-    }
-
-    public boolean isFirstLogin() {
-        return Boolean.TRUE.equals(this.isFirstLogin);
-    }
 
 }

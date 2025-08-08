@@ -1,0 +1,106 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống kê tần suất theo Khoa</title>
+    <th:block th:replace="base :: resources"></th:block>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 450px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container my-4">
+        <h1 class="text-info text-center mt-2 mb-4">THỐNG KÊ TẦN SUẤT KHÓA LUẬN THEO KHOA</h1>
+
+        <!-- Biểu đồ -->
+        <div class="card shadow-sm mb-5">
+            <div class="card-body chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Bảng dữ liệu chi tiết -->
+        <h2 class="text-center text-secondary h4">Bảng số liệu chi tiết</h2>
+        <table class="table table-bordered table-hover mt-3 text-center align-middle">
+            <thead class="table-info">
+                <tr>
+                    <th>Khoa</th>
+                    <th>Số lượng khóa luận</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Controller cần truyền vào 2 biến: khoaLabels và soLuongData -->
+                <tr th:if="${khoaLabels != null and !khoaLabels.isEmpty()}" th:each="label, stat : ${khoaLabels}">
+                    <td class="fw-bold" th:text="${label}"></td>
+                    <td th:text="${soLuongData[stat.index]}"></td>
+                </tr>
+                <tr th:if="${khoaLabels == null or khoaLabels.isEmpty()}">
+                    <td colspan="2" class="text-center text-muted p-3">Không có dữ liệu để hiển thị.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Script để vẽ biểu đồ -->
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const labels = /*[[${khoaLabels}]]*/ [];
+            const data = /*[[${soLuongData}]]*/ [];
+            /*]]>*/
+
+            if (labels && labels.length > 0) {
+                const chartData = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số lượng khóa luận',
+                        data: data,
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(13, 202, 240, 0.7)',
+                        borderColor: 'rgba(13, 202, 240, 1)',
+                        hoverBackgroundColor: 'rgba(13, 202, 240, 0.9)',
+                    }]
+                };
+
+                const config = {
+                    type: 'bar',
+                    data: chartData,
+                    options: {
+                        indexAxis: 'y', // Biểu đồ cột ngang để dễ đọc tên khoa
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                text: 'Biểu đồ số lượng khóa luận theo Khoa',
+                                font: { size: 18, weight: 'bold' }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Số lượng khóa luận',
+                                    font: { size: 14, weight: 'bold' }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, config);
+            }
+        </script>
+    </main>
+
+    <div th:replace="base :: footer"></div>
+</body>
+</html>

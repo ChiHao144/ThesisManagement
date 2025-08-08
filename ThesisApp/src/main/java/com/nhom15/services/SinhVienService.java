@@ -13,5 +13,5 @@ public interface SinhVienService {
     SinhVien getSinhVienById(int id);
     void addOrUpdateSinhVien(SinhVien sv);
     void importSinhVienFromUser();
-
+    void updateSinhVien(SinhVien sv);
 }
