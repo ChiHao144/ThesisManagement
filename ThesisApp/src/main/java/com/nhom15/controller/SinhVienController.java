@@ -34,11 +34,6 @@ public class SinhVienController {
         return "redirect:/sinhvien";
     }
 
-    @GetMapping("/addsinhvien")
-    public String showAddSinhVienForm(Model model) {
-        model.addAttribute("sinhvien", new SinhVien());
-        return "addsinhvien";
-    }
 
     @GetMapping("/importsinhvien")
     public String importSinhViens() {

@@ -18,25 +18,12 @@ public class ThongKeDiemServiceImpl implements ThongKeDiemService{
     private ThongKeDiemRepository thongKeDiemRepo;
     
     @Override
-    public List<Object[]> getTongDiemTheoGiangVien(int khoaLuanId) {
-        return this.thongKeDiemRepo.getTongDiemTheoGiangVien(khoaLuanId);
-    }
-
-    @Override
-    public Double getDiemTrungBinh(int khoaLuanId) {
-        return this.thongKeDiemRepo.getDiemTrungBinh(khoaLuanId);
-    }
-    
-    
-    @Transactional(readOnly = true)
-    @Override
     public List<Object[]> thongKeDiemKhoaLuanTheoNam() {
         return this.thongKeDiemRepo.thongKeDiemKhoaLuanTheoNam();
     }
     
     @Override
     public List<Object[]> thongKeTanSuatKhoaLuanTheoKhoa() {
-        // Gọi phương thức từ repository để lấy dữ liệu
         return this.thongKeDiemRepo.thongKeTanSuatKhoaLuanTheoKhoa();
     }
 }

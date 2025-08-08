@@ -46,14 +46,14 @@
                            th:value="${#dates.format(hoiDong.ngayBaoVe, 'yyyy-MM-dd')}" required>
                 </div>
 
-                <!-- Nơi bảo vệ -->
+               
                 <div class="mb-3">
                     <label for="noiDungBaoVe" class="form-label">Nơi bảo vệ</label>
                     <input type="text" class="form-control" id="noiDungBaoVe" name="noiDungBaoVe"
                            th:value="${hoiDong.noiDungBaoVe}" required>
                 </div>
 
-                <!-- Danh sách thành viên -->
+                
                 <h5>Thành viên hội đồng</h5>
                 <div id="members-container">
                     <div th:each="idx, stat : ${#numbers.sequence(0, selectedGiangVienIds != null ? selectedGiangVienIds.size() - 1 : 0)}"
@@ -87,15 +87,15 @@
                     </div>
                 </div>
 
-                <!-- Danh sách khoá luận -->
+               
                 <h5 class="mt-4">Danh sách khoá luận</h5>
                 <div class="dual-list-box">
-                    <!-- Danh sách chưa chọn -->
+                    
                     <div class="list-box">
                         <input type="text" class="form-control mb-2" placeholder="Tìm khoá luận..."
                                onkeyup="filterList(this, 'listAvailable')">
                         <select id="listAvailable" multiple>
-                            <!-- Các khóa luận chưa được chọn sẽ hiển thị ở đây -->
+                            
                             <option th:each="kl : ${khoaluans}"
                                     th:if="${selectedKhoaLuanIds == null or !selectedKhoaLuanIds.contains(kl.id)}"
                                     th:value="${kl.id}"
@@ -103,29 +103,29 @@
                         </select>
                     </div>
 
-                    <!-- Nút chuyển -->
+                    
                     <div class="btn-move">
                         <button type="button" class="btn btn-primary" onclick="moveSelected('listAvailable', 'listSelected')">→</button>
                         <button type="button" class="btn btn-secondary" onclick="moveSelected('listSelected', 'listAvailable')">←</button>
                     </div>
 
-                    <!-- Danh sách đã chọn -->
+                   
                     <div class="list-box">
                         <input type="text" class="form-control mb-2" placeholder="Tìm khoá luận..."
                                onkeyup="filterList(this, 'listSelected')">
                         <select id="listSelected" name="khoaLuanIds" multiple>
-                            <!-- Các khóa luận đã được chọn sẽ hiển thị ở đây -->
+                            
                             <option th:each="kl : ${khoaluans}"
                                     th:if="${selectedKhoaLuanIds != null and selectedKhoaLuanIds.contains(kl.id)}"
                                     th:value="${kl.id}"
                                     th:text="${kl.chuDe}"
-                                    selected> <!-- Đảm bảo các tùy chọn này được đánh dấu là selected -->
+                                    selected> 
                             </option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Nút submit -->
+                
                 <div class="d-flex gap-2 mt-3">
                     <button type="submit" class="btn btn-success">
                         <span th:if="${hoiDong.id == null}">Thành lập hội đồng</span>
@@ -143,14 +143,14 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
-                                   // Thêm thành viên
+                                   
                                    function addMemberRow() {
                                        const container = $('#members-container');
                                        const firstRow = container.find('.member-row').first();
                                        const newRow = firstRow.clone();
 
-                                       newRow.find('.select2-container').remove(); // Xóa select2 đã khởi tạo
-                                       newRow.find('select').val(''); // Đặt lại giá trị của select
+                                       newRow.find('.select2-container').remove(); 
+                                       newRow.find('select').val(''); 
 
                                        const newButton = newRow.find('button');
                                        newButton.removeClass('btn-success').addClass('btn-danger').text('-');
@@ -158,7 +158,7 @@
 
                                        container.append(newRow);
 
-                                       // Khởi tạo lại select2 cho hàng mới
+                                       
                                        newRow.find('.js-giangvien-select').select2({
                                            placeholder: 'Nhập mã hoặc tên giảng viên...',
                                            allowClear: true,
@@ -171,14 +171,13 @@
                                        $(btn).closest('.member-row').remove();
                                    }
 
-                                   // Hàm di chuyển tùy chọn giữa hai danh sách
+                                   
                                    function moveSelected(fromId, toId) {
                                        const from = document.getElementById(fromId);
                                        const to = document.getElementById(toId);
                                        Array.from(from.selectedOptions).forEach(option => {
                                            to.appendChild(option);
-                                           // Quan trọng: Đánh dấu tùy chọn là selected khi di chuyển vào danh sách "đã chọn"
-                                           // và bỏ chọn khi di chuyển ra khỏi danh sách "đã chọn"
+                                           
                                            option.selected = (toId === 'listSelected');
                                        });
                                    }
@@ -192,7 +191,7 @@
                                    }
 
                                    $(document).ready(function () {
-                                       // Khởi tạo select2 cho các select hiện có khi tải trang
+                                      
                                        $('.js-giangvien-select').select2({
                                            placeholder: 'Nhập mã hoặc tên giảng viên...',
                                            allowClear: true,

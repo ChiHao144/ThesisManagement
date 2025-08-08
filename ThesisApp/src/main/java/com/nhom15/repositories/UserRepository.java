@@ -15,7 +15,5 @@ public interface UserRepository {
     void deleteUser(int id);
     User getUserByUsername(String username);
     boolean authenticate(String username, String password);
-    
-   
     List<User> getUsersByRole(String role);
 }

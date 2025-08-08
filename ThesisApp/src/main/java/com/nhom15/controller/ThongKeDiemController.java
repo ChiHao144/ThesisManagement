@@ -22,32 +22,6 @@ public class ThongKeDiemController {
     @Autowired
     private ThongKeDiemService thongKeDiemService;
 
-    @GetMapping("/thongke/diem/{khoaLuanId}")
-    public String thongKeDiem(@PathVariable("khoaLuanId") int khoaLuanId, Model model) {
-        List<Object[]> data = thongKeDiemService.getTongDiemTheoGiangVien(khoaLuanId);
-        Double avgScore = thongKeDiemService.getDiemTrungBinh(khoaLuanId);
-
-        List<String> labels = new ArrayList<>();
-        List<Double> scores = new ArrayList<>();
-
-        for (Object[] row : data) {
-            labels.add((String) row[1]); // tên giảng viên
-            scores.add(((Number) row[2]).doubleValue()); // tổng điểm
-        }
-
-        model.addAttribute("labels", labels);
-        model.addAttribute("scores", scores);
-        model.addAttribute("avgScore", avgScore);
-
-        return "thongkediem"; // view name
-    }
-
-    @GetMapping("/thongkediem")
-    public String redirectThongKe() {
-        int defaultKhoaLuanId = 1; // hoặc lấy ID mới nhất từ DB
-        return "redirect:/thongke/diem/" + defaultKhoaLuanId;
-    }
-
     @GetMapping("/diem-khoaluan-nam")
     public String thongKeDiemTheoNam(Model model) {
         // 1. Gọi service để lấy dữ liệu thô từ cơ sở dữ liệu

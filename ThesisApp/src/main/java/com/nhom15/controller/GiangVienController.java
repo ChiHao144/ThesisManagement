@@ -33,11 +33,6 @@ public class GiangVienController {
         return "redirect:/giangvien";
     }
     
-    @GetMapping("/addgiangvien")
-    public String showAddGiangVienForm(Model model) {
-        model.addAttribute("sinhvien", new GiangVien());
-        return "addgiangvien"; 
-    }
     
     @GetMapping("/importgiangvien")
     public String importGiangViens() {

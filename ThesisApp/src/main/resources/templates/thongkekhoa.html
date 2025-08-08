@@ -1,9 +1,9 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Thống kê tần suất theo Khoa</title>
-    <th:block th:replace="base :: resources"></th:block>
+    <th:context th:replace="base :: resources"></th:context>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .chart-container {
@@ -17,7 +17,9 @@
     <div th:replace="base :: header"></div>
 
     <main class="container my-4">
-        <h1 class="text-info text-center mt-2 mb-4">THỐNG KÊ TẦN SUẤT KHÓA LUẬN THEO KHOA</h1>
+        <h1 class="text-info text-center mt-2 mb-4">
+            THỐNG KÊ TẦN SUẤT KHÓA LUẬN THEO KHOA
+        </h1>
 
         <!-- Biểu đồ -->
         <div class="card shadow-sm mb-5">
@@ -27,7 +29,9 @@
         </div>
 
         <!-- Bảng dữ liệu chi tiết -->
-        <h2 class="text-center text-secondary h4">Bảng số liệu chi tiết</h2>
+        <h2 class="text-center text-secondary h4">
+            Bảng số liệu chi tiết
+        </h2>
         <table class="table table-bordered table-hover mt-3 text-center align-middle">
             <thead class="table-info">
                 <tr>
@@ -36,23 +40,26 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Controller cần truyền vào 2 biến: khoaLabels và soLuongData -->
                 <tr th:if="${khoaLabels != null and !khoaLabels.isEmpty()}" th:each="label, stat : ${khoaLabels}">
                     <td class="fw-bold" th:text="${label}"></td>
                     <td th:text="${soLuongData[stat.index]}"></td>
                 </tr>
                 <tr th:if="${khoaLabels == null or khoaLabels.isEmpty()}">
-                    <td colspan="2" class="text-center text-muted p-3">Không có dữ liệu để hiển thị.</td>
+                    <td colspan="2" class="text-center text-muted p-3">
+                        Không có dữ liệu để hiển thị.
+                    </td>
                 </tr>
             </tbody>
         </table>
+    </main>
 
-        <!-- Script để vẽ biểu đồ -->
-        <script th:inline="javascript">
-            /*<![CDATA[*/
+    <div th:replace="base :: footer"></div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.onload = function () {
             const labels = /*[[${khoaLabels}]]*/ [];
             const data = /*[[${soLuongData}]]*/ [];
-            /*]]>*/
 
             if (labels && labels.length > 0) {
                 const chartData = {
@@ -63,7 +70,7 @@
                         borderWidth: 1,
                         backgroundColor: 'rgba(13, 202, 240, 0.7)',
                         borderColor: 'rgba(13, 202, 240, 1)',
-                        hoverBackgroundColor: 'rgba(13, 202, 240, 0.9)',
+                        hoverBackgroundColor: 'rgba(13, 202, 240, 0.9)'
                     }]
                 };
 
@@ -98,9 +105,8 @@
                 const ctx = document.getElementById('myChart').getContext('2d');
                 new Chart(ctx, config);
             }
-        </script>
-    </main>
-
-    <div th:replace="base :: footer"></div>
+        };
+        /*]]>*/
+    </script>
 </body>
 </html>

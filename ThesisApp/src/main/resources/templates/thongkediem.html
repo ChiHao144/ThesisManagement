@@ -1,9 +1,9 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Thống kê điểm theo năm</title>
-    <th:block th:replace="base :: resources"></th:block>
+    <th:context th:replace="base :: resources"></th:context>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Tùy chỉnh chiều cao của vùng chứa biểu đồ để cân đối hơn */
@@ -18,7 +18,9 @@
     <div th:replace="base :: header"></div>
 
     <main class="container my-4">
-        <h1 class="text-primary text-center mt-2 mb-4">THỐNG KÊ ĐIỂM KHÓA LUẬN THEO NĂM</h1>
+        <h1 class="text-primary text-center mt-2 mb-4">
+            THỐNG KÊ ĐIỂM KHÓA LUẬN THEO NĂM
+        </h1>
 
         <!-- Biểu đồ được đặt trong card để có hiệu ứng đổ bóng và viền -->
         <div class="card shadow-sm mb-5">
@@ -28,7 +30,9 @@
         </div>
 
         <!-- Bảng dữ liệu chi tiết -->
-        <h2 class="text-center text-secondary h4">Bảng số liệu chi tiết</h2>
+        <h2 class="text-center text-secondary h4">
+            Bảng số liệu chi tiết
+        </h2>
         <table class="table table-bordered table-striped mt-3 text-center align-middle">
             <thead class="table-primary">
                 <tr>
@@ -37,25 +41,27 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Kiểm tra nếu có dữ liệu thì mới hiển thị -->
-                <tr th:if="${labels != null and !labels.isEmpty()}" th:each="label, stat : ${labels}">
+                <tr th:if="${labels != null and !labels.isEmpty()}"
+                    th:each="label, stat : ${labels}">
                     <td class="fw-bold" th:text="${label}"></td>
-                    <!-- Định dạng điểm thành 2 chữ số thập phân -->
                     <td th:text="${#numbers.formatDecimal(scores[stat.index], 1, 2)}"></td>
                 </tr>
-                <!-- Thông báo nếu không có dữ liệu -->
                 <tr th:if="${labels == null or labels.isEmpty()}">
-                    <td colspan="2" class="text-center text-muted p-3">Không có dữ liệu để hiển thị.</td>
+                    <td colspan="2" class="text-center text-muted p-3">
+                        Không có dữ liệu để hiển thị.
+                    </td>
                 </tr>
             </tbody>
         </table>
+    </main>
 
-        <!-- Script để vẽ biểu đồ -->
-        <script th:inline="javascript">
-            /*<![CDATA[*/
+    <div th:replace="base :: footer"></div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.onload = function () {
             const labels = /*[[${labels}]]*/ [];
             const scores = /*[[${scores}]]*/ [];
-            /*]]>*/
 
             if (labels && labels.length > 0) {
                 const data = {
@@ -79,21 +85,15 @@
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: {
-                                display: false // Ẩn chú thích mặc định vì đã có tiêu đề
-                            },
+                            legend: { display: false },
                             title: {
                                 display: true,
                                 text: 'Biểu đồ điểm trung bình qua các năm',
-                                font: {
-                                    size: 18,
-                                    weight: 'bold'
-                                }
+                                font: { size: 18, weight: 'bold' }
                             },
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        // Tùy chỉnh nội dung tooltip
                                         return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
                                     }
                                 }
@@ -123,9 +123,8 @@
                 const ctx = document.getElementById('myChart').getContext('2d');
                 new Chart(ctx, config);
             }
-        </script>
-    </main>
-
-    <div th:replace="base :: footer"></div>
+        };
+        /*]]>*/
+    </script>
 </body>
 </html>
