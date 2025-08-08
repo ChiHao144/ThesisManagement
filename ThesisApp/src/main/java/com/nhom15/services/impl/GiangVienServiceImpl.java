@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
  * @author Chi Hao
  */
 @Service
-public class GiangVienServiceImpl implements GiangVienService{
+public class GiangVienServiceImpl implements GiangVienService {
+
     @Autowired
     private GiangVienRepository giangVienRepo;
-    
+
     @Override
     public List<GiangVien> getGiangViens(Map<String, String> params) {
         return this.giangVienRepo.getGiangViens(params);
@@ -31,7 +32,7 @@ public class GiangVienServiceImpl implements GiangVienService{
     public void importGiangVienFromUser() {
         giangVienRepo.importGiangVienFromUser();
     }
-    
+
     @Override
     public GiangVien getGiangVienById(int id) {
         return this.giangVienRepo.getGiangVienById(id);
@@ -40,5 +41,11 @@ public class GiangVienServiceImpl implements GiangVienService{
     @Override
     public void updateGiangVien(GiangVien gv) {
         this.giangVienRepo.updateGiangVien(gv);
+
     }
+
+    public GiangVien getByUsername(String username) {
+        return this.giangVienRepo.getByUsername(username);
+    }
+
 }

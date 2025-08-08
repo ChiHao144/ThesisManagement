@@ -68,13 +68,13 @@ public class KhoaLuanServiceImpl implements KhoaLuanService {
         if (kl.getChuDe() == null || kl.getChuDe().trim().isEmpty()) {
             throw new IllegalArgumentException("Chủ đề không được để trống.");
         }
-        
-        if (kl.getSinhVienId() == null || kl.getSinhVienId().getId() == null) {
-            throw new IllegalArgumentException("Phải chọn sinh viên thực hiện.");
-        }
 
         if (kl.getGvhd1() == null || kl.getGvhd1().getId() == null) {
-            throw new IllegalArgumentException("Phải chọn giagr viên hướng dẫn 1.");
+            throw new IllegalArgumentException("Phải chọn giảng viên hướng dẫn 1.");
+        }
+
+        if (kl.getSinhVienId() == null || kl.getSinhVienId().getId() == null) {
+            throw new IllegalArgumentException("Phải chọn sinh viên thực hiện.");
         }
 
         KhoaLuan oldKhoaLuan = null;
@@ -85,14 +85,10 @@ public class KhoaLuanServiceImpl implements KhoaLuanService {
             oldGvpb = oldKhoaLuan.getGvpb();
             kl.setNgayTao(oldKhoaLuan.getNgayTao());
         } else {
-            kl.setNgayTao(new Date());
+            kl.setNgayTao(new Date()); 
         }
 
-        if (kl.getGvhd1() != null && kl.getGvhd1().getId() != null) {
-            kl.setGvhd1(giangVienRepo.getGiangVienById(kl.getGvhd1().getId()));
-        } else {
-            kl.setGvhd1(null);
-        }
+        kl.setGvhd1(giangVienRepo.getGiangVienById(kl.getGvhd1().getId()));
 
         if (kl.getGvhd2() != null && kl.getGvhd2().getId() != null) {
             kl.setGvhd2(giangVienRepo.getGiangVienById(kl.getGvhd2().getId()));
@@ -106,11 +102,7 @@ public class KhoaLuanServiceImpl implements KhoaLuanService {
             kl.setGvpb(null);
         }
 
-        if (kl.getSinhVienId() != null && kl.getSinhVienId().getId() != null) {
-            kl.setSinhVienId(sinhVienRepo.getSinhVienById(kl.getSinhVienId().getId()));
-        } else {
-            kl.setSinhVienId(null);
-        }
+        kl.setSinhVienId(sinhVienRepo.getSinhVienById(kl.getSinhVienId().getId()));
 
         if (kl.getHoidongId() != null && kl.getHoidongId().getId() != null) {
             kl.setHoidongId(hoiDongRepo.getHoiDongById(kl.getHoidongId().getId()));
@@ -210,5 +202,10 @@ public class KhoaLuanServiceImpl implements KhoaLuanService {
     @Override
     public void deleteKhoaLuan(int id) {
         this.khoaLuanRepo.deleteKhoaLuan(id);
+    }
+
+    @Override
+    public List<KhoaLuan> getKhoaLuansByHoiDong(int hoiDongId) {
+        return this.khoaLuanRepo.getKhoaLuansByHoiDong(hoiDongId);
     }
 }

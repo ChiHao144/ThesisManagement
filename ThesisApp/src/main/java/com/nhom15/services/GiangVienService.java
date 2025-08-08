@@ -14,4 +14,5 @@ public interface GiangVienService {
     GiangVien getGiangVienById(int id);
     void importGiangVienFromUser();
     void updateGiangVien(GiangVien gv);
+    GiangVien getByUsername(String username);
 }

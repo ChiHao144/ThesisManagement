@@ -4,6 +4,7 @@
  */
 package com.nhom15.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,8 +50,10 @@ public class KhoaLuan implements Serializable {
     @Column(name = "ngay_tao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ngayTao;
+    @JsonIgnore
     @OneToMany(mappedBy = "khoaLuanId")
     private Set<Diem> diemSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "khoaLuanId")
     private Set<ThongBao> thongBaoSet;
     @JoinColumn(name = "gvhd1", referencedColumnName = "id")

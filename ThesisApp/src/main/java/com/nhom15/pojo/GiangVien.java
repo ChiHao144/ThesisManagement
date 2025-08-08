@@ -4,6 +4,8 @@
  */
 package com.nhom15.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,11 +46,15 @@ public class GiangVien implements Serializable {
     @OneToOne(optional = false)
     private User user;
     @OneToMany(mappedBy = "gvId")
+    @JsonIgnore
     private Set<ThanhVien> thanhVienSet;
     @OneToMany(mappedBy = "gvhd1")
+    @JsonIgnore
     private Set<KhoaLuan> khoaLuanSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "gvhd2")
     private Set<KhoaLuan> khoaLuanSet1;
+    @JsonIgnore
     @OneToMany(mappedBy = "gvpb")
     private Set<KhoaLuan> khoaLuanSet2;
 

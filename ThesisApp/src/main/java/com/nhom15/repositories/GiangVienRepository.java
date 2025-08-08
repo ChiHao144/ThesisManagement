@@ -12,6 +12,7 @@ public interface GiangVienRepository {
     List<GiangVien> getGiangViens(Map<String, String> params);
     void addOrUpdateGiangVien(GiangVien gv);
     GiangVien getGiangVienById(int id);
+    GiangVien getByUsername(String username);
     public void importGiangVienFromUser();
     void updateGiangVien(GiangVien gv);
 }

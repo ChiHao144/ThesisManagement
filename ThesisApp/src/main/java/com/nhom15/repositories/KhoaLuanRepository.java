@@ -17,4 +17,5 @@ public interface KhoaLuanRepository {
     KhoaLuan getKhoaLuanById(int id);
     void addOrUpdateKhoaLuan(KhoaLuan kl);
     void deleteKhoaLuan(int id);
+    List<KhoaLuan> getKhoaLuansByHoiDong(int hoiDongId);
 }

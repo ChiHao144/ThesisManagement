@@ -45,10 +45,10 @@ public class GiangVienRepositoryImpl implements GiangVienRepository {
 
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
-                String pattern = String.format("%%%s%%", kw); 
+                String pattern = String.format("%%%s%%", kw);
                 Predicate p1 = b.like(userJoin.get("fullname"), pattern);
                 Predicate p2 = b.like(root.get("hocHam"), pattern);
-                predicates.add(b.or(p1, p2)); 
+                predicates.add(b.or(p1, p2));
             }
 
             q.where(predicates.toArray(Predicate[]::new));
@@ -60,7 +60,7 @@ public class GiangVienRepositoryImpl implements GiangVienRepository {
 
         return query.getResultList();
     }
-    
+
     @Override
     public void addOrUpdateGiangVien(GiangVien gv) {
         Session s = this.factory.getObject().getCurrentSession();
@@ -89,7 +89,7 @@ public class GiangVienRepositoryImpl implements GiangVienRepository {
             }
         }
     }
-    
+
     @Override
     public GiangVien getGiangVienById(int id) {
         Session s = this.factory.getObject().getCurrentSession();
@@ -105,4 +105,14 @@ public class GiangVienRepositoryImpl implements GiangVienRepository {
             s.merge(gv);
         }
     }
+    
+    public GiangVien getByUsername(String username) {
+    Session session = this.factory.getObject().getCurrentSession();
+        Query q = session.createQuery("FROM GiangVien gv WHERE gv.user.username = :un", GiangVien.class);
+        q.setParameter("un", username);
+
+        List<GiangVien> result = q.getResultList();
+        return result.isEmpty() ? null : result.get(0);
+    }
+    
 }

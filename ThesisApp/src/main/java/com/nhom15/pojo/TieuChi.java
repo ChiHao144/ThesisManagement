@@ -4,6 +4,7 @@
  */
 package com.nhom15.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +48,7 @@ public class TieuChi implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "diem_toi_da")
     private Double diemToiDa;
+    @JsonIgnore
     @OneToMany(mappedBy = "tieuChiId")
     private Set<Diem> diemSet;
 

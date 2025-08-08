@@ -4,9 +4,11 @@
  */
 package com.nhom15.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -51,9 +53,10 @@ public class HoiDong implements Serializable {
     private String noiDungBaoVe;
     @Column(name = "da_khoa")
     private Boolean daKhoa;
-    @OneToMany(mappedBy = "hoiDongId")
+    @OneToMany(mappedBy = "hoiDongId", fetch = FetchType.EAGER)
     private Set<ThanhVien> thanhVienSet;
     @OneToMany(mappedBy = "hoidongId")
+    @JsonIgnore
     private Set<KhoaLuan> khoaLuanSet;
 
     public HoiDong() {

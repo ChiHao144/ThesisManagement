@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" >
     <head>
-        <title>Danh sách hội đồng</title>
+        <title>Danh sách hội đồng phân công</title>
     <th:context th:replace="base :: resources"></th:context>
 </head>
 <body>
     <div th:replace="base :: header"></div>
-
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
     <main class="container">
         <div class="container mt-4">
-            <h2 class="text-info text-center mt-2">Danh sách hội đồng</h2>
+            <h2 class="text-info text-center mt-2">Danh sách hội đồng phân công</h2>
 
-            <!-- Form tìm kiếm và lọc -->
-            <form th:action="@{/hoidongs}" class="mb-3">
+            <form th:action="@{/giangvien/hoidongs}" class="mb-3">
                 <div class="row g-2">
                     <div class="col-md-4">
                         <input type="text" name="kw" class="form-control" placeholder="Tìm theo nội dung bảo vệ">
@@ -29,12 +30,6 @@
                     </div>
                 </div>
             </form>
-
-
-            <div class="mt-2 mb-2">
-                <a th:href="@{/hoidongs/create}" class="btn btn-success">+ Thêm Hội Đồng</a>
-            </div>
-
 
             <table class="table table-bordered table-hover">
                 <thead class="table-dark">
@@ -59,7 +54,7 @@
                         <td th:text="${hd.daKhoa ? 'Đã khóa' : 'Chưa khóa'}"></td>
                         <td>
                             <div th:each="tv : ${hd.thanhVienSet}">
-                                <span th:text="${tv.gvId.user.fullname}"></span> - 
+                                <span th:text="${tv.gvId.user.fullname}"></span>
                                 <span th:switch="${tv.vaiTro}">
                                     <span th:case="'chu_tich'">Chủ tịch</span>
                                     <span th:case="'thu_ky'">Thư ký</span>
@@ -70,12 +65,7 @@
                             </div>
                         </td>
                         <td class="text-center align-middle">
-                            <a th:href="@{'/hoidongs/edit/' + ${hd.id}}" class="btn btn-warning btn-sm">Sửa</a>
-                            <a 
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('Bạn có chắc muốn xóa hội đồng này?')">Xóa</a>
-                            <a  class="btn btn-secondary btn-sm"
-                               th:if="${!hd.daKhoa}">Khóa</a>
+                            <a th:href="@{'/giangvien/hoidong/' + ${hd.id} + '/khoaluans'}" class="btn btn-warning btn-sm">Danh sách khóa luận được phân công</a>
                         </td>
                     </tr>
                 </tbody>
@@ -87,3 +77,4 @@
 
 </body>
 </html>
+

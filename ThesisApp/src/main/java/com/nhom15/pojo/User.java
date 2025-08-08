@@ -1,5 +1,8 @@
 package com.nhom15.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -43,6 +46,7 @@ public class User implements Serializable {
     @Column(name = "username")
     private String username;
     @Basic(optional = false)
+    @JsonIgnore
     @Column(name = "password")
     private String password;
     @Basic(optional = false)
@@ -57,8 +61,10 @@ public class User implements Serializable {
     private String fullname;
     @Column(name = "is_active")
     private Boolean isActive;
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private GiangVien giangVien;
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private SinhVien sinhVien;
 
