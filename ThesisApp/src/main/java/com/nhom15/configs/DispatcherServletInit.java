@@ -1,0 +1,51 @@
+package com.nhom15.configs;
+
+import com.nhom15.filters.JwtFilter;
+import jakarta.servlet.Filter;
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletRegistration;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+/**
+ *
+ * @author Chi Hao
+ */
+public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherServletInitializer{
+
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[] { 
+            ThymeleafConfigs.class,
+            HibernateConfigs.class,
+            MailConfigs.class,
+            SpringSecurityConfigs.class
+        };
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[] {
+            WebAppContextConfigs.class
+        };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[] {"/"};
+    }
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        String location = "/";
+        long maxFileSize = 5242880; 
+        long maxRequestSize = 20971520; 
+        int fileSizeThreshold = 0;
+
+        registration.setMultipartConfig(new MultipartConfigElement(location, maxFileSize, maxRequestSize, fileSizeThreshold));
+    }
+    
+    @Override
+    protected Filter[] getServletFilters() {
+        return new Filter[] { new JwtFilter() }; 
+    }
+}

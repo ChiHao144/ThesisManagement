@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+    <head>
+        <title>Danh sách tiêu chí</title>
+    <th:context th:replace="base :: resources"></th:context>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container">
+        <div class="container mt-4">
+            <h2 class="text-info text-center mt-2">Danh sách tiêu chí</h2>
+
+            <div class="mt-2 mb-2">
+                <a th:href="@{/tieuchis/add}" class="btn btn-success">+ Thêm tiêu chí</a>
+            </div>
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên tiêu chí</th>
+                        <th>Nội dung</th>
+                        <th>Điểm tối đa</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr th:if="${#lists.isEmpty(tieuChis)}">
+                        <td colspan="8" class="text-center text-danger">Không tìm thấy kết quả phù hợp</td>
+                    </tr>
+
+                    <tr th:each="tc : ${tieuChis}">
+                        <td th:text="${tc.id}">1</td>
+                        <td th:text="${tc.tenTc}">Tên tiêu chí</td>
+                        <td th:text="${tc.noiDung}">Nội dung tiêu chí</td>
+                        <td th:text="${tc.diemToiDa}">Điểm tối đa</td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a th:href="@{'/tieuchis/edit/' + ${tc.id}}" class="btn btn-warning btn-sm">Sửa</a>
+                                <button th:onclick="'deleteTieuChi(\''+@{/api/tieuchis/}+'\','+${tc.id}+')'" class="btn btn-danger btn-sm">Xóa</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div th:replace="base :: footer"></div>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>
+

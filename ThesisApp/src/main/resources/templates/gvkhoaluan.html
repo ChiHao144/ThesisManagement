@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+    <head>
+        <title>Danh sách khóa luận phân công</title>
+    <th:context th:replace="base :: resources"></th:context>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container">
+        <div class="container mt-4">
+            <h2 class="text-info text-center mt-2">Danh sách khóa luận phân công</h2>
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên đề tài</th>
+                        <th>Sinh viên</th>
+                        <th>Giảng viên hướng dẫn</th>
+                        <th>Giảng viên phản biện</th>
+                        <th>Hội đồng</th>
+                        <th>Ngày tạo</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr th:if="${#lists.isEmpty(khoaLuans)}">
+                        <td colspan="8" class="text-center text-danger">Chưa có khóa luận được phân công chấm</td>
+                    </tr>
+
+                    <tr th:each="kl : ${khoaLuans}">
+                        <td th:text="${kl.id}">1</td>
+                        <td th:text="${kl.chuDe}">Tên đề tài</td>
+                        <td th:text="${kl.sinhVienId != null ? kl.sinhVienId.user.fullname : 'Chưa có'}">SV</td>
+                        <td>
+                            <span th:text="${kl.gvhd1 != null ? kl.gvhd1.user.fullname : 'Chưa có GVHD1'}"></span>
+                            <span th:if="${kl.gvhd2 != null}"><br/></span>
+                            <span th:text="${kl.gvhd2 != null ? kl.gvhd2.user.fullname : ''}"></span>
+                        </td>
+                        <td th:text="${kl.gvpb != null ? kl.gvpb.user.fullname : 'Chưa có'}">Phản biện</td>
+                        <td th:text="${kl.hoidongId != null ? kl.hoidongId.noiDungBaoVe : 'Chưa có'}">Hội đồng</td>
+                        <td th:text="${kl.ngayTao}">08/08/2025</td>
+                        <td>
+                            <a th:href="@{/giangvien/khoaluan/{id}/chamdiem(id=${kl.id})}"  class="btn btn-info">Chấm điểm</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div th:replace="base :: footer"></div>
+
+</body>
+</html>

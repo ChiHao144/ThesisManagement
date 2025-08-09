@@ -1,0 +1,49 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Quản lý giảng viên</title>
+    <th:context th:replace="base :: resources"></th:context>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container">
+        <h1 class="text-info text-center mt-2">DANH SÁCH GIẢNG VIÊN</h1>
+
+        <div>
+            <form th:action="@{/giangvien}">
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" class="form-control" id="kw" placeholder="Nhập từ khóa" name="kw">
+                    <label for="kw">Nhập từ khóa</label>
+                </div>
+                <div class="mb-3 mt-3">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+            </form>
+        </div>
+        <div class="text-end mb-3">
+            <a th:href="@{/importgiangvien}" class="btn btn-primary">🡇 Đồng bộ giảng viên từ User</a>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Họ và tên</th>
+                <th>Học hàm</th>
+                <th></th>
+            </tr>
+            <tr th:each="gv : ${giangvien}">
+                <td th:text="${gv.id}"></td>
+                <td th:text="${gv.user.fullname}"></td>
+                <td th:text="${gv.hocHam}"></td>
+                <td>
+                    <a th:href="@{'/giangvien/' + ${gv.id}}" class="btn btn-info">Cập nhật</a>
+                    <button class="btn btn-danger">Xóa</button>
+                </td>
+            </tr>
+        </table>
+    </main>
+    <div th:replace="base :: footer"></div>
+</body>
+</html>
+

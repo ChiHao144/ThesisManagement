@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+    <head>
+        <title>Danh sách thành viên</title>
+    <th:context th:replace="base :: resources"></th:context>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container">
+        <div class="container mt-4">
+            <h2 class="text-info text-center mt-2">Danh sách thành viên</h2>
+
+            <form method="get" th:action="@{/thanhviens}" class="row g-3 mb-4">
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" class="form-control" id="kw" placeholder="Nhập từ khóa" name="kw">
+                    <label for="kw">Nhập từ khóa</label>
+                </div>
+                <div class="col-md-3">
+                    <select name="vaiTro" class="form-select" th:value="${param.vaiTro}">
+                        <option value="">-- Vai trò --</option>
+                        <option value="chu_tich">Chủ tịch</option>
+                        <option value="thu_ky">Thư ký</option>
+                        <option value="phan_bien">Phản biện</option>
+                        <option value="uy_vien">Ủy viên</option>
+                        <option value="thanh_vien">ThanhVien</option>
+                    </select>
+                </div>
+                <div class="col-md-2 form-check mt-2">
+                    <input class="form-check-input" type="checkbox" name="chuaCoHoiDong" value="true"
+                           th:checked="${param.chuaCoHoiDong == 'true'}">
+                    <label class="form-check-label">Chưa có hội đồng</label>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+            </form>
+
+            <div class="mt-2 mb-2">
+                <a th:href="@{/thanhviens/add}" class="btn btn-success">+ Thêm thành viên</a>
+            </div>
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>GiáoViên ID</th>
+                        <th>Họ Tên</th>
+                        <th>Hội Đồng ID</th>
+                        <th>Nội dung bảo vệ</th>
+                        <th>Vai trò</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(thanhViens)}">
+                        <td colspan="8" class="text-center text-danger">Không tìm thấy kết quả phù hợp</td>
+                    </tr>
+
+                    <tr th:each="tv : ${thanhViens}">
+                        <td th:text="${tv.id}">1</td>
+                        <td th:text="${tv.gvId.id}">GiáoViên ID</td>
+                        <td th:text="${tv.gvId.user.fullname}">Họ tên</td>
+                        <td th:text="${tv.hoiDongId != null ? tv.hoiDongId.id : 'Chưa có'}">Hội Đồng ID</td>
+                        <td th:text="${tv.hoiDongId != null ? tv.hoiDongId.noiDungBaoVe : 'Chưa có'}">Nội dung bảo vệ</td>
+                        <td th:text="${tv.vaiTro}">Vai trò</td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a th:href="@{'/thanhviens/edit/' + ${tv.id}}" class="btn btn-warning btn-sm">Sửa</a>
+                                <button th:onclick="'deleteThanhVien(\''+@{/api/thanhviens/}+'\','+${tv.id}+')'" class="btn btn-danger btn-sm">Xóa</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div th:replace="base :: footer"></div>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

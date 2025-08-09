@@ -1,0 +1,130 @@
+package com.nhom15.repositories.impl;
+
+import com.nhom15.pojo.User;
+import com.nhom15.repositories.UserRepository;
+import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author Chi Hao
+ */
+@Repository
+@Transactional
+public class UserRepositoryImpl implements UserRepository {
+
+    private static final int PAGE_SIZE = 3;
+
+    @Autowired
+    private LocalSessionFactoryBean factory;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<User> getUsers(Map<String, String> params) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<User> q = b.createQuery(User.class);
+        Root root = q.from(User.class);
+        q.select(root);
+
+        if (params != null) {
+            List<Predicate> predicates = new ArrayList<>();
+
+            String kw = params.get("kw");
+            if (kw != null && !kw.isEmpty()) {
+                predicates.add(b.like(root.get("fullname"), String.format("%%%s%%", kw)));
+            }
+
+            String role = params.get("role");
+            if (role != null && !role.isEmpty()) {
+                predicates.add(b.equal(root.get("role"), role));
+            }
+
+            q.where(predicates.toArray(Predicate[]::new));
+
+            q.orderBy(b.desc(root.get(params.getOrDefault("sortBy", "id"))));
+        }
+
+        Query query = s.createQuery(q);
+
+        if (params != null) {
+            String page = params.get("page");
+            if (page != null) {
+                int p = Integer.parseInt(page);
+                int start = (p - 1) * PAGE_SIZE;
+
+                query.setFirstResult(start);
+                query.setMaxResults(PAGE_SIZE);
+            }
+        }
+
+        return query.getResultList();
+    }
+
+    @Override
+    public void addOrUpdateUser(User u) {
+        Session s = this.factory.getObject().getCurrentSession();
+        if (u.getId() == null) {
+            s.persist(u);
+        } else {
+            s.merge(u);
+        }
+    }
+
+    @Override
+    public User getUserById(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(User.class, id);
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        User u = this.getUserById(id);
+        s.remove(u);
+
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query q = s.createNamedQuery("User.findByUsername", User.class);
+        q.setParameter("username", username);
+
+        return (User) q.getSingleResult();
+    }
+
+    @Override
+    public boolean authenticate(String username, String password) {
+        User u = this.getUserByUsername(username);
+
+        return this.passwordEncoder.matches(password, u.getPassword());
+    }
+
+    @Override
+    public List<User> getUsersByRole(String role) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Root<User> root = cq.from(User.class);
+
+        cq.select(root).where(cb.equal(root.get("role"), role));
+
+        return s.createQuery(cq).getResultList();
+    }
+
+}
