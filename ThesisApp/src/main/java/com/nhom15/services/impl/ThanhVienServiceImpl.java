@@ -5,6 +5,8 @@
 package com.nhom15.services.impl;
 
 import com.nhom15.pojo.ThanhVien;
+import com.nhom15.repositories.DiemRepository;
+import com.nhom15.repositories.HoiDongRepository;
 import com.nhom15.repositories.ThanhVienRepository;
 import com.nhom15.services.ThanhVienService;
 import java.util.List;
@@ -18,33 +20,52 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ThanhVienServiceImpl implements ThanhVienService {
-    
+
     @Autowired
     private ThanhVienRepository thanhVienRepo;
     
+    @Autowired
+    private DiemRepository diemRepo;
+
+    @Autowired
+    private HoiDongRepository hoiDongRepo;
+
     @Override
     public ThanhVien getByGiangVienAndHoiDong(int giangVienId, int hoiDongId) {
         return this.thanhVienRepo.getByGiangVienAndHoiDong(giangVienId, hoiDongId);
     }
-    
+
     @Override
     public List<ThanhVien> getThanhViens(Map<String, String> params) {
         return this.thanhVienRepo.getThanhViens(params);
     }
-    
+
     @Override
     public ThanhVien getThanhVienById(int id) {
         return this.thanhVienRepo.getThanhVienById(id);
     }
-    
+
     @Override
     public void addOrUpdateThanhVien(ThanhVien tv) {
+        if (tv.getId() == null) {
+            boolean exists = this.thanhVienRepo.isGiangVienTrongHoiDong(tv.getGvId().getId(), tv.getHoiDongId().getId());
+
+            if (exists) {
+                throw new IllegalArgumentException("Giảng viên đã thuộc hội đồng này!");
+            }
+
+            boolean hd = this.hoiDongRepo.isHoiDongDaKhoa(tv.getHoiDongId().getId());
+            if (hd) {
+                throw new IllegalArgumentException("Hội đồng đã khóa!");
+            }
+        }
+
         this.thanhVienRepo.addOrUpdateThanhVien(tv);
     }
-    
+
     @Override
     public void deleteThanhVien(int id) {
         this.thanhVienRepo.deleteThanhVien(id);
     }
-    
+
 }

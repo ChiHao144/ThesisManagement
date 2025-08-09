@@ -74,25 +74,28 @@ public class ThanhVienRepositoryImpl implements ThanhVienRepository {
         Session s = factory.getObject().getCurrentSession();
         CriteriaBuilder cb = s.getCriteriaBuilder();
         CriteriaQuery<ThanhVien> cq = cb.createQuery(ThanhVien.class);
-        Root root = cq.from(ThanhVien.class);
+        Root<ThanhVien> root = cq.from(ThanhVien.class);
 
         Join<ThanhVien, GiangVien> gvJoin = root.join("gvId", JoinType.LEFT);
         Join<GiangVien, User> userJoin = gvJoin.join("user", JoinType.LEFT);
-
         Join<ThanhVien, HoiDong> hdJoin = root.join("hoiDongId", JoinType.LEFT);
 
-        cq.select(root).distinct(true);
+        cq.select(root);
 
         List<Predicate> predicates = new ArrayList<>();
 
         if (params != null) {
             String kw = params.get("kw");
-            if (kw != null && !kw.isEmpty()) {
-                String pattern = "%" + kw + "%";
+            if (kw != null && !kw.trim().isEmpty()) {
+                String pattern = "%" + kw.trim().toLowerCase() + "%";
                 predicates.add(
                         cb.or(
-                                cb.like(cb.lower(userJoin.get("fullname")), pattern.toLowerCase()),
-                                cb.like(cb.lower(hdJoin.get("noiDungBaoVe")), pattern.toLowerCase())
+                                cb.like(cb.lower(userJoin.get("fullname")), pattern),
+                                // chỉ lọc noiDungBaoVe khi hội đồng không null
+                                cb.and(
+                                        cb.isNotNull(root.get("hoiDongId")),
+                                        cb.like(cb.lower(hdJoin.get("noiDungBaoVe")), pattern)
+                                )
                         )
                 );
             }

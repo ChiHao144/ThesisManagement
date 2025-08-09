@@ -8,17 +8,40 @@
     <div th:replace="base :: header"></div>
 
     <main class="container">
+        <div th:if="${error != null}" class="alert alert-danger text-center" role="alert" th:text="${error}"></div>
         <div class="container mt-4">
             <h2 class="text-info text-center mt-2">Danh sách khóa Luận</h2>
 
 
-            <form th:action="@{/khoaluans}">
-                <input type="text" name="kw" placeholder="Từ khóa (Chủ đề, Sinh viên, Giảng viên)" class="form-control" />
+            <form th:action="@{/khoaluans}" method="get" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <!-- Tìm kiếm từ khóa -->
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group">
+                            <span class="input-group-text bg-info text-white">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" name="kw" th:value="${param.kw}" 
+                                   class="form-control" placeholder="Từ khóa (Chủ đề, Sinh viên, Giảng viên)">
+                        </div>
+                    </div>
 
-                <div class="form-floating mb-3 mt-3">
-                    <button type="submit" class="btn btn-info">Tìm kiếm</button>
+
+                    <!-- Năm -->
+                    <div class="col-md-3 col-sm-6">
+                        <input type="number" id="nam" name="nam" th:value="${param.nam}"
+                               class="form-control" placeholder="Năm">
+                    </div>
+
+                    <!-- Nút tìm kiếm -->
+                    <div class="col-md-3 col-sm-6 d-grid">
+                        <button type="submit" class="btn btn-info text-white">
+                            <i class="bi bi-filter"></i> Tìm kiếm
+                        </button>
+                    </div>
                 </div>
             </form>
+
 
             <div class="mt-2 mb-2">
                 <a th:href="@{/khoaluans/add}" class="btn btn-success">+ Thêm Khóa Luận</a>
@@ -58,7 +81,8 @@
                         <td>
                             <div class="d-flex justify-content-center gap-2">
                                 <a th:href="@{'/khoaluans/edit/' + ${kl.id}}" class="btn btn-warning btn-sm">Sửa</a>
-                                <button class="btn btn-danger btn-sm">Xóa</button>
+                                <button th:onclick="'deleteKhoaLuan(\''+@{/api/khoaluans/}+'\','+${kl.id}+')'" class="btn btn-danger btn-sm">Xóa</button>
+                                <a th:href="@{'/khoaluans/bangdiem/' + ${kl.id}}" class="btn btn-warning btn-sm">Xem điểm</a>
                             </div>
                         </td>
                     </tr>
@@ -68,6 +92,7 @@
     </main>
 
     <div th:replace="base :: footer"></div>
+    <script th:src="@{/js/main.js}"></script>
 
 </body>
 </html>

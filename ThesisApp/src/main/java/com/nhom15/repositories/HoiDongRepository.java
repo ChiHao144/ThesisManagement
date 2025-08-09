@@ -20,4 +20,5 @@ public interface HoiDongRepository {
     void deleteHoiDong(int id);
     boolean isHoiDongDaKhoa(int hoiDongId);
     List<HoiDong> getHoiDongsByGiangVien(int giangVienId, Map<String, String> params);
+    void saveHoiDong(HoiDong hd);
 }
