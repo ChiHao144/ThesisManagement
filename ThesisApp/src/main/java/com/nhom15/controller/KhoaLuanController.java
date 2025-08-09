@@ -5,6 +5,7 @@
 package com.nhom15.controller;
 
 import com.nhom15.pojo.KhoaLuan;
+import com.nhom15.services.DiemService;
 import com.nhom15.services.KhoaLuanService;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,9 @@ public class KhoaLuanController {
 
     @Autowired
     private KhoaLuanService khoaLuanService;
+    
+    @Autowired
+    private DiemService diemService;
 
     @GetMapping("/khoaluans")
     public String listKhoaLuans(Model model, @RequestParam Map<String, String> params) {
@@ -57,5 +61,21 @@ public class KhoaLuanController {
         model.addAttribute("khoaluan", this.khoaLuanService.getKhoaLuanById(id));
 
         return "khoaluanaddandupdate";
+    }
+
+    @GetMapping("/khoaluans/bangdiem/{id}")
+    public String xemDiemKhoaLuan(@PathVariable("id") int khoaLuanId, Model model) {
+        try {
+            Map<String, Object> data = diemService.getDiemKhoaLuan(khoaLuanId);
+
+            model.addAttribute("khoaLuan", data.get("khoaLuan"));
+            model.addAttribute("diemThanhVien", data.get("diemTrungBinhThanhVien"));
+            model.addAttribute("diemTrungBinhKhoaLuan", data.get("diemTrungBinhKhoaLuan"));
+
+            return "bangdiem";
+        } catch (IllegalStateException ex) {
+            model.addAttribute("error", ex.getMessage());
+            return "khoaluans";
+        }
     }
 }

@@ -6,6 +6,7 @@ package com.nhom15.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -53,7 +54,7 @@ public class HoiDong implements Serializable {
     private String noiDungBaoVe;
     @Column(name = "da_khoa")
     private Boolean daKhoa;
-    @OneToMany(mappedBy = "hoiDongId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hoiDongId", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ThanhVien> thanhVienSet;
     @OneToMany(mappedBy = "hoidongId")
     @JsonIgnore

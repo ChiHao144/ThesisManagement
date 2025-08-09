@@ -23,31 +23,37 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class ThanhVienController {
+
     @Autowired
     private ThanhVienService thanhVienService;
-    
+
     @GetMapping("/thanhviens")
-    public String listThanhViens(Model model, @RequestParam Map<String, String> params) { 
+    public String listThanhViens(Model model, @RequestParam Map<String, String> params) {
         List<ThanhVien> thanhViens = this.thanhVienService.getThanhViens(params);
         model.addAttribute("thanhViens", thanhViens);
         return "thanhviens";
     }
-    
+
     @GetMapping("/thanhviens/add")
     public String addThanhVien(Model model) {
         model.addAttribute("thanhvien", new ThanhVien());
         return "thanhvienaddandupdate";
     }
-    
+
     @PostMapping("/thanhviens/save")
-    public String saveThanhVien(@ModelAttribute(value = "thanhvien") ThanhVien tc) {
-        this.thanhVienService.addOrUpdateThanhVien(tc);
+    public String saveThanhVien(@ModelAttribute(value = "thanhvien") ThanhVien tv, Model model) {
+        try {
+            this.thanhVienService.addOrUpdateThanhVien(tv);
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "thanhvienaddandupdate";
+        }
         return "redirect:/thanhviens";
     }
-    
+
     @GetMapping("/thanhviens/edit/{thanhvienId}")
-    public String updateTieuChi(Model model, @PathVariable(value = "tieuchiId") int id) {
-         model.addAttribute("thanhvien", this.thanhVienService.getThanhVienById(id));
-         return "thanhvienaddandupdate";
+    public String updateTieuChi(Model model, @PathVariable(value = "thanhvienId") int id) {
+        model.addAttribute("thanhvien", this.thanhVienService.getThanhVienById(id));
+        return "thanhvienaddandupdate";
     }
 }

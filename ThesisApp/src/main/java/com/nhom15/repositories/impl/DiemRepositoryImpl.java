@@ -5,6 +5,9 @@
 package com.nhom15.repositories.impl;
 
 import com.nhom15.pojo.Diem;
+import com.nhom15.pojo.HoiDong;
+import com.nhom15.pojo.KhoaLuan;
+import com.nhom15.pojo.ThanhVien;
 import com.nhom15.repositories.DiemRepository;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
@@ -14,7 +17,10 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -44,11 +50,6 @@ public class DiemRepositoryImpl implements DiemRepository {
     }
 
     @Override
-    public List<Diem> getDiemByKhoaLuan(int khoaLuanId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public List<Diem> getDiemByGiangVienAndKhoaLuan(int thanhVienId, int khoaLuanId) {
         Session s = factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
@@ -62,22 +63,6 @@ public class DiemRepositoryImpl implements DiemRepository {
         q.where(b.and(khoaLuanPredicate, thanhVienPredicate));
 
         return s.createQuery(q).getResultList();
-    }
-
-    @Override
-    public double getDiemTrungBinhKhoaLuan(int khoaLuanId) {
-        Session s = factory.getObject().getCurrentSession();
-        CriteriaBuilder cb = s.getCriteriaBuilder();
-        CriteriaQuery<Double> cq = cb.createQuery(Double.class);
-        Root root = cq.from(Diem.class);
-
-        Expression avgDiem = cb.avg(root.get("diemSo"));
-
-        cq.select(avgDiem).where(cb.equal(root.get("khoaLuanId").get("id"), khoaLuanId));
-
-        Double result = s.createQuery(cq).getSingleResult();
-
-        return result != null ? result : 0.0;
     }
 
     @Override
@@ -97,4 +82,57 @@ public class DiemRepositoryImpl implements DiemRepository {
 
         return result.isEmpty() ? null : result.get(0);
     }
+
+    public Map<String, Object> getDiemKhoaLuan(int khoaLuanId) {
+        Session session = factory.getObject().getCurrentSession();
+
+        KhoaLuan khoaLuan = session.get(KhoaLuan.class, khoaLuanId);
+        if (khoaLuan == null) {
+            return null;
+        }
+
+        HoiDong hoiDong = khoaLuan.getHoidongId();
+        if (hoiDong == null) {
+            return null;
+        }
+
+        Set<ThanhVien> thanhViens = hoiDong.getThanhVienSet();
+
+        Map<ThanhVien, Double> diemTBThanhVienMap = new HashMap<>();
+        double tongDiem = 0;
+        int count = 0;
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        for (ThanhVien tv : thanhViens) {
+            // 2. Tạo CriteriaQuery tính điểm trung bình của 1 ThanhVien trên 1 KhoaLuan
+            CriteriaQuery<Double> cq = cb.createQuery(Double.class);
+            Root<Diem> root = cq.from(Diem.class);
+
+            cq.select(cb.avg(root.get("diem")));
+            cq.where(
+                    cb.equal(root.get("khoaLuanId").get("id"), khoaLuanId),
+                    cb.equal(root.get("thanhvienId").get("id"), tv.getId())
+            );
+
+            Double diemTb = session.createQuery(cq).uniqueResult();
+            if (diemTb == null) {
+                diemTb = 0.0;
+            }
+
+            diemTBThanhVienMap.put(tv, diemTb);
+            tongDiem += diemTb;
+            count++;
+        }
+
+        Double diemTBKhoaLuan = count > 0 ? tongDiem / count : 0.0;
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("khoaLuan", khoaLuan);
+        result.put("diemTrungBinhThanhVien", diemTBThanhVienMap);
+        result.put("diemTrungBinhKhoaLuan", diemTBKhoaLuan);
+
+        return result;
+    }
+
 }

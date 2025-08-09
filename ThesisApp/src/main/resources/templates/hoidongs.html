@@ -70,11 +70,15 @@
                         </td>
                         <td class="text-center align-middle">
                             <a th:href="@{'/hoidongs/edit/' + ${hd.id}}" class="btn btn-warning btn-sm">Sửa</a>
-                            <a 
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('Bạn có chắc muốn xóa hội đồng này?')">Xóa</a>
-                            <a  class="btn btn-secondary btn-sm"
-                               th:if="${!hd.daKhoa}">Khóa</a>
+                            <button th:onclick="'deleteHoiDong(\''+@{/api/hoidongs/}+'\','+${hd.id}+')'" class="btn btn-danger btn-sm">Xóa</button>
+                            <form th:action="@{/hoidongs/lock}" method="post" th:if="${!hd.daKhoa}" style="display:inline">
+                                <input type="hidden" name="id" th:value="${hd.id}" />
+                                <button type="submit" class="btn btn-secondary btn-sm">Khóa</button>
+                            </form>
+                            <form th:action="@{/hoidongs/unlock}" method="post" th:if="${hd.daKhoa}" style="display:inline">
+                                <input type="hidden" name="id" th:value="${hd.id}" />
+                                <button type="submit" class="btn btn-info btn-sm">Mở khóa</button>
+                            </form>
                         </td>
                     </tr>
                 </tbody>
@@ -83,6 +87,7 @@
     </main>
 
     <div th:replace="base :: footer"></div>
+    <script th:src="@{/js/main.js}"></script>
 
 </body>
 </html>

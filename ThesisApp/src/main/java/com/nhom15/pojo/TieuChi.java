@@ -6,6 +6,7 @@ package com.nhom15.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,7 +50,7 @@ public class TieuChi implements Serializable {
     @Column(name = "diem_toi_da")
     private Double diemToiDa;
     @JsonIgnore
-    @OneToMany(mappedBy = "tieuChiId")
+    @OneToMany(mappedBy = "tieuChiId", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Diem> diemSet;
 
     public TieuChi() {
@@ -123,5 +124,5 @@ public class TieuChi implements Serializable {
     public String toString() {
         return "com.nhom15.pojo.TieuChi[ id=" + id + " ]";
     }
-    
+
 }

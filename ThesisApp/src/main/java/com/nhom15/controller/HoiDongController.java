@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -109,9 +110,28 @@ public class HoiDongController {
         return "hdcreateandupdate";
     }
 
-    @GetMapping("/hoidongs/delete/{id}")
-    public String deleteHoiDong(@PathVariable("id") int id) {
-        this.hoiDongService.deleteHoiDong(id);
+    @PostMapping("/hoidongs/lock")
+    public String lockHoiDong(@RequestParam("id") int hoiDongId, RedirectAttributes redirectAttrs) {
+        System.out.println("Request lockHoiDong với id = " + hoiDongId);
+        try {
+            hoiDongService.lockOrUnlockHoiDong(hoiDongId, true);
+            redirectAttrs.addFlashAttribute("message", "Khóa hội đồng thành công và đã gửi bảng điểm cho sinh viên.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            redirectAttrs.addFlashAttribute("error", "Lỗi khi khóa hội đồng: " + ex.getMessage());
+        }
         return "redirect:/hoidongs";
     }
+
+    @PostMapping("/hoidongs/unlock")
+    public String unlockHoiDong(@RequestParam("id") int hoiDongId, RedirectAttributes redirectAttrs) {
+        try {
+            hoiDongService.lockOrUnlockHoiDong(hoiDongId, false);
+            redirectAttrs.addFlashAttribute("message", "Mở khóa hội đồng thành công.");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", "Lỗi khi mở khóa hội đồng: " + ex.getMessage());
+        }
+        return "redirect:/hoidongs";
+    }
+
 }

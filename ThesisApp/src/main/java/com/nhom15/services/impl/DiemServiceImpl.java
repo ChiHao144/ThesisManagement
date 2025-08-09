@@ -77,4 +77,12 @@ public class DiemServiceImpl implements DiemService {
         return this.diemRepo.getDiemByGiangVienAndKhoaLuan(thanhVienId, khoaLuanId);
     }
 
+    @Override
+    public Map<String, Object> getDiemKhoaLuan(int khoaLuanId) {
+        if (!hoiDongRepo.isHoiDongDaKhoa(khoaLuanId)) {
+            throw new IllegalStateException("Hội đồng chưa khóa, không thể lấy điểm khóa luận.");
+        }
+        return this.diemRepo.getDiemKhoaLuan(khoaLuanId);
+    }
+
 }

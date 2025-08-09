@@ -55,7 +55,7 @@
                 <td th:text="${p.fullname}"></td>
                 <td>
                     <a th:href="@{'/user/' + ${p.id}}" class="btn btn-info">Cập nhật</a>
-                    <button th:onclick="'deleteUser(\''+@{/api/user/}+'\','+${p.id}+')'" class="btn btn-danger">Xóa</button>
+                    <button th:onclick="'deleteAll(\''+@{/api/user/}+'\','+${p.id}+')'" class="btn btn-danger">Xóa</button>
                 </td>
             </tr>
         </table>

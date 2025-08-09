@@ -15,4 +15,5 @@ import java.util.Map;
 public interface DiemService {
      void chamDiem(int giangVienId, int khoaLuanId, Map<Integer, Double> diemTieuChi);
      List<Diem> getDiemByGiangVienAndKhoaLuan(int thanhVienId, int khoaLuanId);
+     Map<String, Object> getDiemKhoaLuan(int khoaLuanId);
 }

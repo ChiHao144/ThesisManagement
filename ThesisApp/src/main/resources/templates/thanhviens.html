@@ -53,21 +53,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:if="${#lists.isEmpty(thanhviens)}">
+                    <tr th:if="${#lists.isEmpty(thanhViens)}">
                         <td colspan="8" class="text-center text-danger">Không tìm thấy kết quả phù hợp</td>
                     </tr>
 
-                    <tr th:each="tv : ${thanhviens}">
+                    <tr th:each="tv : ${thanhViens}">
                         <td th:text="${tv.id}">1</td>
-                        <td th:text="${tv.gvId}">GiáoViên ID</td>
+                        <td th:text="${tv.gvId.id}">GiáoViên ID</td>
                         <td th:text="${tv.gvId.user.fullname}">Họ tên</td>
-                        <td th:text="${tv.hoiDongId != null ? kl.hoiDongId.noiDungBaoVe : 'Chưa có'}">Hội Đồng ID</td>
-                        <td th:text="${kl.hoidongId != null ? kl.hoidongId.noiDungBaoVe : 'Chưa có'}">Hội đồng</td>
-                        <td th:text="${kl.ngayTao}">08/08/2025</td>
+                        <td th:text="${tv.hoiDongId != null ? tv.hoiDongId.id : 'Chưa có'}">Hội Đồng ID</td>
+                        <td th:text="${tv.hoiDongId != null ? tv.hoiDongId.noiDungBaoVe : 'Chưa có'}">Nội dung bảo vệ</td>
+                        <td th:text="${tv.vaiTro}">Vai trò</td>
                         <td>
                             <div class="d-flex justify-content-center gap-2">
-                                <a th:href="@{'/khoaluans/edit/' + ${kl.id}}" class="btn btn-warning btn-sm">Sửa</a>
-                                <button class="btn btn-danger btn-sm">Xóa</button>
+                                <a th:href="@{'/thanhviens/edit/' + ${tv.id}}" class="btn btn-warning btn-sm">Sửa</a>
+                                <button th:onclick="'deleteThanhVien(\''+@{/api/thanhviens/}+'\','+${tv.id}+')'" class="btn btn-danger btn-sm">Xóa</button>
                             </div>
                         </td>
                     </tr>
@@ -77,6 +77,6 @@
     </main>
 
     <div th:replace="base :: footer"></div>
-
+    <script th:src="@{/js/main.js}"></script>
 </body>
 </html>

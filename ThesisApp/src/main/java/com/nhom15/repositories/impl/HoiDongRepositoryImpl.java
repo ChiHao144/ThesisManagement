@@ -250,4 +250,10 @@ public class HoiDongRepositoryImpl implements HoiDongRepository {
         return query.getResultList();
     }
 
+    @Override
+    public void saveHoiDong(HoiDong hd) {
+        Session s = this.factory.getObject().getCurrentSession();
+            s.merge(hd);
+
+    }
 }

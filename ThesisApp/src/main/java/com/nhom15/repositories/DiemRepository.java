@@ -6,6 +6,7 @@ package com.nhom15.repositories;
 
 import com.nhom15.pojo.Diem;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,8 +14,7 @@ import java.util.List;
  */
 public interface DiemRepository {
     void saveOrUpdate(Diem diem);
-    List<Diem> getDiemByKhoaLuan(int khoaLuanId);
     List<Diem> getDiemByGiangVienAndKhoaLuan(int thanhVienId, int khoaLuanId);
-    double getDiemTrungBinhKhoaLuan(int khoaLuanId);
     Diem getDiem(int thanhVienId, int khoaLuanId, int tieuChiId);
+    Map<String, Object> getDiemKhoaLuan(int khoaLuanId);
 }
